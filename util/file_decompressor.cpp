@@ -19,6 +19,8 @@ file_decompressor::file_decompressor(std::string file_name) : reader(file_name) 
 
 void file_decompressor::decompress(std::string dst) {
     writer.set_file(dst);
-
-
+    while (!reader.eof()) {
+        writer.print(decompressor.decode(reader.get_next_code_piece()));
+        reader.make_n_bits_used(decompressor.code_pos()); // code_pos() seems to be ok
+    }
 }

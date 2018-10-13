@@ -20,16 +20,24 @@ struct file_reader {
 
     uint64_t get_n_bytes(uint8_t n);
 
+    uint64_t get_next_code_piece();
+
+    void make_n_bits_used(int8_t n);
+
     std::pair<symbol*, size_t> get_block();
 
     bool eof();
 
 private:
+    void refill_useful_bits();
+
     std::ifstream in;
     std::string file;
     symbol buffer[BUFFER_SIZE];
     size_t cur_symbol;
     size_t s_in_buff;
+    uint64_t cur_code_piece = 0;
+    int8_t useful_bits = 0;
 };
 
 

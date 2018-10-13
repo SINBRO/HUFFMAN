@@ -50,3 +50,22 @@ uint64_t file_reader::get_n_bytes(uint8_t n) { // effective n <= 8
     }
     return res;
 }
+
+void file_reader::make_n_bits_used(int8_t n) {
+    cur_code_piece >>= n;
+    useful_bits -= n;  // should not be < 0
+    refill_useful_bits();
+}
+
+uint64_t file_reader::get_next_code_piece() {
+    refill_useful_bits();
+    return cur_code_piece; //  last 7 bits can be wrong, but 57 bits is enough
+}
+
+inline void file_reader::refill_useful_bits() {
+    while (useful_bits <= 64 - sizeof(symbol) * 8) {
+        cur_code_piece <<= sizeof(symbol) * 8;
+        cur_code_piece += get_symbol();
+        useful_bits += sizeof(symbol) * 8;
+    }
+}
