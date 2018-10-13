@@ -22,9 +22,9 @@ struct file_compressor {
 private:
     size_t *count_symbols();
 
-    data_compressor compressor;
     file_reader reader;
     file_writer writer;
+    data_compressor compressor;
 };
 
 

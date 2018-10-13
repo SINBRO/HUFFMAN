@@ -15,11 +15,10 @@ file_decompressor::file_decompressor(std::string file_name) : reader(file_name) 
     } catch (...) {
         throw std::runtime_error("Unable to get correct code tree");
     }
-
-
 }
 
 void file_decompressor::decompress(std::string dst) {
     writer.set_file(dst);
+
 
 }

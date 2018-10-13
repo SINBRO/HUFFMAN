@@ -32,6 +32,7 @@ private:
     symbol buffer[BUFFER_SIZE];
     size_t cur_symbol;
     symbol cur_part;
+    uint8_t cur_shift;
 };
 
 
