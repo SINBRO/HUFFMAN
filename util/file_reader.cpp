@@ -41,3 +41,12 @@ std::pair<symbol *, size_t> file_reader::get_block() {
     s_in_buff = static_cast<size_t>(in.gcount());
     return res;
 }
+
+uint64_t file_reader::get_n_bytes(uint8_t n) { // effective n <= 8
+    uint64_t res = 0;
+    for (int i = 0; i < n; ++i) {
+        res <<= 8;
+        res += get_symbol();
+    }
+    return res;
+}

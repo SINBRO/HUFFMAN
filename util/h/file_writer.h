@@ -31,6 +31,7 @@ private:
     std::ofstream out;
     symbol buffer[BUFFER_SIZE];
     size_t cur_symbol;
+    symbol cur_part;
 };
 
 

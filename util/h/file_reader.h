@@ -18,6 +18,8 @@ struct file_reader {
 
     symbol get_symbol();
 
+    uint64_t get_n_bytes(uint8_t n);
+
     std::pair<symbol*, size_t> get_block();
 
     bool eof();
