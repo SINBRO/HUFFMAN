@@ -5,7 +5,7 @@
 #include "h/file_reader.h"
 
 file_reader::file_reader(std::string const &file_name) : in(file_name, std::ifstream::binary),
-                                                         cur_symbol(0), s_in_buff(0), file(file_name) {
+                                                          file(file_name), cur_symbol(0), s_in_buff(0) {
     if (in.fail()) {
         in.close();
         throw std::runtime_error("Unable to open file " + file_name);
@@ -63,7 +63,7 @@ uint64_t file_reader::get_next_code_piece() {
 }
 
 inline void file_reader::refill_useful_bits() {
-    while (useful_bits <= 64 - sizeof(symbol) * 8) {
+    while (useful_bits <= static_cast<uint8_t>(64 - sizeof(symbol) * 8)) {
         cur_code_piece <<= sizeof(symbol) * 8;
         cur_code_piece += get_symbol();
         useful_bits += sizeof(symbol) * 8;

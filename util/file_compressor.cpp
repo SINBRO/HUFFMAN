@@ -30,9 +30,11 @@ void file_compressor::compress(std::string dst) {
 }
 
 size_t *file_compressor::count_symbols() {
-    auto *res = new size_t[SYMBOL_CNT];
-    memset(res, 0, SYMBOL_CNT);
-
+    auto res = new size_t[SYMBOL_CNT];
+    //memset(res, 0, SYMBOL_CNT);
+    for (uint16_t i = 0; i < SYMBOL_CNT; ++i) {
+        res[i] = 0;
+    }
     while (!reader.eof()) {
         ++res[reader.get_symbol()];
     }

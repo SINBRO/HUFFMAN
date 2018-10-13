@@ -33,7 +33,7 @@ void file_writer::print_code(code x) {
     cur_part += x.value << cur_bits;
     if (cur_bits + x.bits > 64) {
         print_number(static_cast<int32_t>(cur_part));
-        cur_part = x.value >> (64 - cur_bits);
+        cur_part = x.value >> static_cast<uint8_t >(64 - cur_bits);
         cur_bits -= 64 - x.bits;
     } else {
         cur_bits += x.bits;
@@ -52,8 +52,8 @@ file_writer::~file_writer() {
 }
 
 void file_writer::print_number(int32_t x) {
-    for (int i = 0; i < sizeof(int32_t) / sizeof(symbol); ++i) {
-        print(static_cast<symbol>(SYMBOL_MAX_VALUE & x));
+    for (uint8_t i = 0; i < sizeof(int32_t) / sizeof(symbol); ++i) {
+        print(static_cast<symbol>(SYMBOL_MAX_VALUE & static_cast<uint16_t >(x)));
         x >>= 8 * sizeof(symbol);
     }
 }
