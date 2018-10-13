@@ -32,7 +32,7 @@ void file_writer::print(symbol s) {
 void file_writer::print_code(code x) {
     cur_part += x.value << cur_bits;
     if (cur_bits + x.bits > 64) {
-        print_number(cur_part);
+        print_number(static_cast<int32_t>(cur_part));
         cur_part = x.value >> (64 - cur_bits);
         cur_bits -= 64 - x.bits;
     } else {

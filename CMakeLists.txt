@@ -1,6 +1,10 @@
 cmake_minimum_required(VERSION 3.12)
 project(HUFFMAN)
 
-set(CMAKE_CXX_STANDARD 14)
+if(CMAKE_COMPILER_IS_GNUCC OR CMAKE_COMPILER_IS_GNUCXX)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -std=c++11 -O2 -pedantic")
+    set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -fsanitize=address,undefined -D_GLIBCXX_DEBUG")
+endif()
 
-add_executable(HUFFMAN util/main.cpp lib/code_tree.cpp lib/h/code_tree.h lib/h/types_consts.h util/file_compressor.cpp util/h/file_compressor.h util/file_reader.cpp util/h/file_reader.h util/file_writer.cpp util/h/file_writer.h util/file_decompressor.cpp util/h/file_decompressor.h lib/data_compressor.cpp lib/h/data_compressor.h lib/code.cpp lib/h/code.h lib/data_decompressor.cpp lib/h/data_decompressor.h)
+add_subdirectory(lib)
+add_subdirectory(util)
