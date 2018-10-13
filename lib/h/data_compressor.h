@@ -16,8 +16,8 @@ struct data_compressor {
 
     std::vector<code> compress(symbol* data, size_t cnt);
 
-private:
     code_tree tree;
+private:
     code codes[SYMBOL_CNT];
 };
 

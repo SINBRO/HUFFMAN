@@ -24,6 +24,9 @@ struct file_writer {
 
     void print_code_block(std::vector<code> block);
 
+    template<class T>
+    void print_number(T x);
+
 private:
     std::ofstream out;
     symbol buffer[BUFFER_SIZE];

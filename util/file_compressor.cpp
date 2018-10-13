@@ -12,7 +12,14 @@ file_compressor::file_compressor(std::string const &file_name) : reader(file_nam
 void file_compressor::compress(std::string dst) {
     writer.set_file(dst);
 
-    ///// PRINT TREE & OTHER
+    auto converted_tree = compressor.tree.convert();
+
+    writer.print_number(static_cast<uint32_t>(converted_tree.size()));
+
+    for (auto &i : converted_tree) {
+        writer.print_number(i.first);
+        writer.print_number(i.second);
+    }                                       // TREE PRINTED
 
     std::pair<symbol*, size_t> block;
 

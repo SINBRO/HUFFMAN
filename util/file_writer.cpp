@@ -37,3 +37,12 @@ file_writer::~file_writer() {
     out.write(reinterpret_cast<const char *>(buffer), BUFFER_SIZE);
     out.close();
 }
+
+template<class T>
+void file_writer::print_number(T x) {
+    for (int i = 0; i < sizeof(T) / sizeof(symbol); ++i) {
+        print(SYMBOL_MAX_VALUE & x);
+        x >>= 8 * sizeof(symbol);
+    }
+}
+
