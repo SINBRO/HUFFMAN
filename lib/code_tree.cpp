@@ -29,7 +29,7 @@ code_tree::code_tree(size_t *freq) {
 }
 
 code_tree::code_tree(std::vector<std::pair<int32_t, int32_t>> &init_data) {
-    
+    head = *make_node(init_data, init_data.size()-1);
 }
 
 symbol code_tree::decode(uint64_t code_piece) {
@@ -41,9 +41,16 @@ symbol code_tree::decode(uint64_t code_piece) {
     return static_cast<symbol>(x->sym);
 }
 
-code_tree::node code_tree::make_node(std::vector<std::pair<int32_t, int32_t>> &init_data, size_t i) {
-
-    return code_tree::node();
+code_tree::node* code_tree::make_node(std::vector<std::pair<int32_t, int32_t>> &init_data, size_t i) { //!!! MB INFINITE RECURSION
+    node *res, *ch1, *ch2;
+    if (init_data[i].first == -1) {
+        res = new node(static_cast<uint16_t>(init_data[i].first));
+    } else {
+        ch1 = make_node(init_data, static_cast<size_t>(init_data[i].first));
+        ch2 = make_node(init_data, static_cast<size_t>(init_data[i].second));
+        res = new node(ch1, ch2, NONE);
+    }
+    return res;
 }
 
 std::vector<std::pair<int32_t, int32_t>> code_tree::convert() {
