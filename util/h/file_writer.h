@@ -22,7 +22,9 @@ struct file_writer {
 
     void print(symbol s);
 
-    void print_code_block(std::vector<code> block);
+    void print_code(code x);
+
+    inline void print_code_block(std::vector<code> block);
 
     template<class T>
     void print_number(T x);
@@ -31,8 +33,8 @@ private:
     std::ofstream out;
     symbol buffer[BUFFER_SIZE];
     size_t cur_symbol;
-    symbol cur_part;
-    uint8_t cur_shift;
+    uint64_t cur_part;
+    uint8_t cur_bits;
 };
 
 

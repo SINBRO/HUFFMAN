@@ -29,12 +29,25 @@ void file_writer::print(symbol s) {
     buffer[cur_symbol++] = s;
 }
 
-void file_writer::print_code_block(std::vector<code> block) {
+void file_writer::print_code(code x) {
+    cur_part += x.value << cur_bits;
+    if (cur_bits + x.bits > 64) {
+        print_number(cur_part);
+        cur_part = x.value >> (64 - cur_bits);
+        cur_bits -= 64 - x.bits;
+    } else {
+        cur_bits += x.bits;
+    }
+}
 
+void file_writer::print_code_block(std::vector<code> block) {
+    for (auto &i : block) {
+        print_code(i);
+    }
 }
 
 file_writer::~file_writer() {
-    out.write(reinterpret_cast<const char *>(buffer), BUFFER_SIZE);
+    out.write(reinterpret_cast<const char *>(buffer), cur_symbol);
     out.close();
 }
 
