@@ -14,7 +14,7 @@
 struct code_tree {
     code_tree() = default;
 
-    explicit code_tree(size_t *freq); // SYMBOL_CNT elements
+    explicit code_tree(size_t freq[SYMBOL_CNT]); // SYMBOL_CNT elements
 
     explicit code_tree(std::vector<std::pair<int32_t, int32_t>> &init_data);
 

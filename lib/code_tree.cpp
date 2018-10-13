@@ -5,7 +5,7 @@
 #include <queue>
 #include "h/code_tree.h"
 
-code_tree::code_tree(size_t *freq) {
+code_tree::code_tree(size_t freq[SYMBOL_CNT]) {
     struct node_cmp {
         bool operator()(node* lhs, node* rhs ) const {
             return lhs->cnt < rhs->cnt;
