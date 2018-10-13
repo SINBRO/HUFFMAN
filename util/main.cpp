@@ -5,7 +5,6 @@
 
 int main(int argc, char* argv[]) {
     if (argc != 4) {
-        std::cerr << "AAAAAAAAAAA";
         std::cerr << "Incorrect arguments. Expected: -mode(-c/-d) SRC DST";
         return -1;
     }
