@@ -28,6 +28,10 @@ code_tree::code_tree(size_t *freq) {
     head = *queue.top();
 }
 
+code_tree::code_tree(std::vector<std::pair<int32_t, int32_t>> &init_data) {
+    
+}
+
 symbol code_tree::decode(uint64_t code_piece) {
     node* x = &head;
     code_pos = 0;
@@ -35,4 +39,28 @@ symbol code_tree::decode(uint64_t code_piece) {
         x = x->child[1 & (code_piece >> code_pos++)];
     }
     return static_cast<symbol>(x->sym);
+}
+
+code_tree::node code_tree::make_node(std::vector<std::pair<int32_t, int32_t>> &init_data, size_t i) {
+
+    return code_tree::node();
+}
+
+std::vector<std::pair<int32_t, int32_t>> code_tree::convert() {
+    auto res = std::vector<std::pair<int32_t, int32_t>>();
+    convert_dfs(res, &head);
+    return res;
+}
+
+int32_t code_tree::convert_dfs(std::vector<std::pair<int32_t, int32_t>> v, code_tree::node *x) {
+    int32_t l, r;
+    if (x->sym == NONE) {
+        l = convert_dfs(v, x->child[0]);
+        r = convert_dfs(v, x->child[1]);
+    } else {
+        l = -1;
+        r = x->sym;
+    }
+    v.emplace_back(l, r);
+    return static_cast<int32_t>(v.size() - 1);
 }

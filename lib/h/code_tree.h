@@ -16,13 +16,15 @@ struct code_tree {
 
     explicit code_tree(size_t *freq); // SYMBOL_CNT elements
 
-    //code_tree(...) CONSTRUCTOR TO READ A TREE
+    explicit code_tree(std::vector<std::pair<int32_t, int32_t>> &init_data);
 
     symbol decode(uint64_t code_piece);
 
+    std::vector<std::pair<int32_t, int32_t>> convert();
+
     struct node {
         uint16_t sym;
-        node* child[2];
+        node *child[2];
         size_t cnt = 0;
 
         node() : child(), sym(NONE) {
@@ -40,17 +42,17 @@ struct code_tree {
             child[1] = nullptr;
         };
 
-        node(node* ch1, node* ch2) : child(), sym(NONE) {
+        node(node *ch1, node *ch2) : child(), sym(NONE) {
             child[0] = ch1;
             child[1] = ch2;
         };
 
-        node(node* ch1, node* ch2, uint16_t s) : child(), sym(s) {
+        node(node *ch1, node *ch2, uint16_t s) : child(), sym(s) {
             child[0] = ch1;
             child[1] = ch2;
         };
 
-        node(node* ch1, node* ch2, uint16_t s, size_t count) : child(), sym(s), cnt(count) {
+        node(node *ch1, node *ch2, uint16_t s, size_t count) : child(), sym(s), cnt(count) {
             child[0] = ch1;
             child[1] = ch2;
         };
@@ -59,6 +61,8 @@ struct code_tree {
     uint8_t code_pos = 0;
 
 private:
+    int32_t convert_dfs(std::vector<std::pair<int32_t, int32_t>> v, node *x);
+    node make_node(std::vector<std::pair<int32_t, int32_t>> &init_data, size_t i);
 
     node head;
 };
