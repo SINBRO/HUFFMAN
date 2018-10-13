@@ -8,7 +8,7 @@
 #include <cstdlib>
 #include <cstdint>
 
-typedef uint8_t symbol;
+typedef unsigned char symbol;
 
 const symbol SYMBOL_MAX_VALUE = UINT8_MAX;
 const size_t SYMBOL_CNT = (size_t) 1 << static_cast<uint8_t>(sizeof(symbol)*8);
