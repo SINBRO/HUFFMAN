@@ -14,7 +14,7 @@ struct data_compressor {
 
     explicit data_compressor(size_t *freq); // SYMBOL_CNT elements
 
-    std::vector<code> compress(symbol* data, size_t cnt);
+    std::vector<code> compress(symbol *data, size_t cnt);
 
     code_tree tree;
 private:

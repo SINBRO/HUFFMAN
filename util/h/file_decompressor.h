@@ -17,7 +17,7 @@ struct file_decompressor {
     explicit file_decompressor(std::string file_name);
 
     void decompress(std::string dst);
-    
+
 private:
     data_decompressor decompressor;
     file_reader reader;

@@ -5,7 +5,8 @@
 #include "h/file_compressor.h"
 #include <cstring>
 
-file_compressor::file_compressor(std::string const &file_name) : reader(file_name), compressor(count_symbols()) { // mb count before reader init?
+file_compressor::file_compressor(std::string const &file_name) : reader(file_name), compressor(
+        count_symbols()) { // mb count before reader init?
 
 }
 
@@ -21,7 +22,7 @@ void file_compressor::compress(std::string dst) {
         writer.print_number(i.second);
     }                                       // TREE PRINTED
 
-    std::pair<symbol*, size_t> block;
+    std::pair<symbol *, size_t> block;
 
     while (!reader.eof()) {
         block = reader.get_block();

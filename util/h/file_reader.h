@@ -24,7 +24,7 @@ struct file_reader {
 
     void make_n_bits_used(int8_t n);
 
-    std::pair<symbol*, size_t> get_block();
+    std::pair<symbol *, size_t> get_block();
 
     bool eof();
 

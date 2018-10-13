@@ -7,11 +7,11 @@
 
 code_tree::code_tree(size_t freq[SYMBOL_CNT]) {
     struct node_cmp {
-        bool operator()(node* lhs, node* rhs ) const {
+        bool operator()(node *lhs, node *rhs) const {
             return lhs->cnt < rhs->cnt;
         }
     };
-    auto queue = std::priority_queue<node*, std::vector<node*>, node_cmp>();
+    auto queue = std::priority_queue<node *, std::vector<node *>, node_cmp>();
     for (size_t i = 0; i < SYMBOL_CNT; ++i) {
         if (freq[i] != 0) {
             queue.push(new node(static_cast<uint16_t>(i), freq[i]));
@@ -29,19 +29,20 @@ code_tree::code_tree(size_t freq[SYMBOL_CNT]) {
 }
 
 code_tree::code_tree(std::vector<std::pair<int32_t, int32_t>> &init_data) {
-    head = *make_node(init_data, init_data.size()-1);
+    head = *make_node(init_data, init_data.size() - 1);
 }
 
 symbol code_tree::decode(uint64_t code_piece) {
-    node* x = &head;
+    node *x = &head;
     code_pos = 0;
     while (x->sym == NONE) {
-        x = x->child[1 & (code_piece >> code_pos++)];
+        x = x->child[static_cast<uint32_t>(1) & (code_piece >> code_pos++)];
     }
     return static_cast<symbol>(x->sym);
 }
 
-code_tree::node* code_tree::make_node(std::vector<std::pair<int32_t, int32_t>> &init_data, size_t i) { //!!! MB INFINITE RECURSION
+code_tree::node *
+code_tree::make_node(std::vector<std::pair<int32_t, int32_t>> &init_data, size_t i) { //!!! MB INFINITE RECURSION
     node *res, *ch1, *ch2;
     if (init_data[i].first == -1) {
         res = new node(static_cast<uint16_t>(init_data[i].first));

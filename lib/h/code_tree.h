@@ -62,7 +62,8 @@ struct code_tree {
 
 private:
     int32_t convert_dfs(std::vector<std::pair<int32_t, int32_t>> v, node *x);
-    node* make_node(std::vector<std::pair<int32_t, int32_t>> &init_data, size_t i);
+
+    node *make_node(std::vector<std::pair<int32_t, int32_t>> &init_data, size_t i);
 
     node head;
 };

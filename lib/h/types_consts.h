@@ -11,9 +11,9 @@
 typedef unsigned char symbol;
 
 const symbol SYMBOL_MAX_VALUE = UINT8_MAX;
-const size_t SYMBOL_CNT = (size_t) 1 << static_cast<uint8_t>(sizeof(symbol)*8);
+const size_t SYMBOL_CNT = (size_t) 1 << static_cast<uint8_t>(sizeof(symbol) * 8);
 const uint16_t NONE = UINT16_MAX;
-const size_t BUFFER_SIZE = (size_t) 1<<static_cast<uint8_t>(10);
+const size_t BUFFER_SIZE = (size_t) 1 << static_cast<uint8_t>(10);
 const int16_t TOO_SHORT_CODE = -1;
 
 

@@ -5,7 +5,7 @@
 #include "h/file_reader.h"
 
 file_reader::file_reader(std::string const &file_name) : in(file_name, std::ifstream::binary),
-                                                          file(file_name), cur_symbol(0), s_in_buff(0) {
+                                                         file(file_name), cur_symbol(0), s_in_buff(0) {
     if (in.fail()) {
         in.close();
         throw std::runtime_error("Unable to open file " + file_name);

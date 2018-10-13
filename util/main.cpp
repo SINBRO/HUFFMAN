@@ -3,7 +3,7 @@
 #include "h/file_compressor.h"
 #include "h/file_decompressor.h"
 
-int main(int argc, char* argv[]) {
+int main(int argc, char *argv[]) {
     if (argc != 4) {
         std::cerr << "Incorrect arguments. Expected: -mode(-c/-d) SRC DST";
         return -1;
@@ -26,7 +26,7 @@ int main(int argc, char* argv[]) {
             return -1;
         }
         finish = clock();
-        std::cerr << "Successfully compressed in " + std::to_string((finish-start)*1000 / CLOCKS_PER_SEC) + " ms";
+        std::cerr << "Successfully compressed in " + std::to_string((finish - start) * 1000 / CLOCKS_PER_SEC) + " ms";
         return 0;
     } else if (mode == "-d") {
         std::cerr << "Decompressing " + src + "...\n";
@@ -40,7 +40,7 @@ int main(int argc, char* argv[]) {
             return -1;
         }
         finish = clock();
-        std::cerr << "Successfully decompressed in " + std::to_string((finish-start)*1000 / CLOCKS_PER_SEC) + " ms";
+        std::cerr << "Successfully decompressed in " + std::to_string((finish - start) * 1000 / CLOCKS_PER_SEC) + " ms";
         return 0;
 
     } else {
