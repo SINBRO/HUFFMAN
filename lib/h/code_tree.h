@@ -27,32 +27,32 @@ struct code_tree {
         node *child[2];
         size_t cnt = 0;
 
-        node() : child(), sym(NONE) {
+        node() : sym(NONE), child() {
             child[0] = nullptr;
             child[1] = nullptr;
         };
 
-        explicit node(uint16_t s) : child(), sym(s) {
+        explicit node(uint16_t s) : sym(s), child() {
             child[0] = nullptr;
             child[1] = nullptr;
         };
 
-        node(uint16_t s, size_t count) : child(), sym(s), cnt(count) {
+        node(uint16_t s, size_t count) : sym(s), child(), cnt(count) {
             child[0] = nullptr;
             child[1] = nullptr;
         };
 
-        node(node *ch1, node *ch2) : child(), sym(NONE) {
+        node(node *ch1, node *ch2) : sym(NONE), child() {
             child[0] = ch1;
             child[1] = ch2;
         };
 
-        node(node *ch1, node *ch2, uint16_t s) : child(), sym(s) {
+        node(node *ch1, node *ch2, uint16_t s) : sym(s), child() {
             child[0] = ch1;
             child[1] = ch2;
         };
 
-        node(node *ch1, node *ch2, uint16_t s, size_t count) : child(), sym(s), cnt(count) {
+        node(node *ch1, node *ch2, uint16_t s, size_t count) : sym(s), child(), cnt(count) {
             child[0] = ch1;
             child[1] = ch2;
         };

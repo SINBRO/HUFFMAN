@@ -4,14 +4,15 @@
 #include "h/file_decompressor.h"
 
 int main(int argc, char* argv[]) {
-    if (argc != 3) {
+    if (argc != 4) {
+        std::cerr << "AAAAAAAAAAA";
         std::cerr << "Incorrect arguments. Expected: -mode(-c/-d) SRC DST";
         return -1;
     }
     std::string mode, src, dst;
-    mode = argv[0];
-    src = argv[1];
-    dst = argv[2];
+    mode = argv[1];
+    src = argv[2];
+    dst = argv[3];
     clock_t start, finish;
 
     if (mode == "-c") {
