@@ -51,10 +51,9 @@ file_writer::~file_writer() {
     out.close();
 }
 
-template<class T>
-void file_writer::print_number(T x) {
-    for (int i = 0; i < sizeof(T) / sizeof(symbol); ++i) {
-        print(SYMBOL_MAX_VALUE & x);
+void file_writer::print_number(int32_t x) {
+    for (int i = 0; i < sizeof(int32_t) / sizeof(symbol); ++i) {
+        print(static_cast<symbol>(SYMBOL_MAX_VALUE & x));
         x >>= 8 * sizeof(symbol);
     }
 }

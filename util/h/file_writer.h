@@ -24,10 +24,9 @@ struct file_writer {
 
     void print_code(code x);
 
-    inline void print_code_block(std::vector<code> block);
+    void print_code_block(std::vector<code> block);
 
-    template<class T>
-    void print_number(T x);
+    void print_number(int32_t x);
 
 private:
     std::ofstream out;
