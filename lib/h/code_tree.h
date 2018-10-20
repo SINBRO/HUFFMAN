@@ -39,8 +39,6 @@ struct code_tree {
 
         node(node const *ch1, node const *ch2) : sym(NONE), child{ch1, ch2} {};
 
-        node(node const *ch1, node const *ch2, uint16_t s) : sym(s), child{ch1, ch2} {};
-
         node(node const *ch1, node const *ch2, uint16_t s, size_t count) : sym(s), child{ch1, ch2}, cnt(count) {};
 
         ~node() {

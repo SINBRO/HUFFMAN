@@ -14,7 +14,7 @@ file_reader::file_reader(std::string const &file_name) : in(file_name, std::ifst
 
 symbol file_reader::get_symbol() {
     if (cur_symbol >= s_in_buff) {
-        in.read(reinterpret_cast<char *>(buffer), BUFFER_SIZE);
+        in.read(reinterpret_cast<char *>(buffer), BUFFER_SIZE * sizeof(symbol) / sizeof(char));
         cur_symbol = 0;
         s_in_buff = static_cast<size_t>(in.gcount());
     }

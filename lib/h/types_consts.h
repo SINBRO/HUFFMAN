@@ -10,7 +10,7 @@
 #include <memory>
 
 
-typedef unsigned char symbol;
+typedef uint8_t symbol;
 
 const symbol SYMBOL_MAX_VALUE = UINT8_MAX;
 const size_t SYMBOL_CNT = (size_t) 1 << static_cast<uint8_t>(sizeof(symbol) * 8);
