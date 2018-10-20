@@ -6,7 +6,7 @@
 #include <cstring>
 
 file_compressor::file_compressor(std::string const &file_name) : reader(file_name), compressor(
-        count_symbols()) { // mb count before reader init?
+        count_symbols()) {
 }
 
 void file_compressor::compress(std::string dst) {

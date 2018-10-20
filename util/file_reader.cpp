@@ -21,7 +21,7 @@ symbol file_reader::get_symbol() {
         cur_symbol = 0;
         s_in_buff = static_cast<size_t>(in.gcount()) * sizeof(char) / sizeof(symbol);
 
-        cout << "<read new BUFFER " << (in.eof() ? "eof" : "!eof") << ' ' << s_in_buff << "> ";
+        //cout << "<read new BUFFER " << (in.eof() ? "eof" : "!eof") << ' ' << s_in_buff << "> ";
     }
     return buffer[cur_symbol++];
 }
@@ -42,9 +42,7 @@ bool file_reader::eof() {
 
 std::pair<symbol const *, size_t> file_reader::get_block() {
     auto res = std::pair<symbol *, size_t>(&buffer[cur_symbol], s_in_buff - cur_symbol);
-    in.read(reinterpret_cast<char *>(buffer), BUFFER_SIZE);
-    cur_symbol = 0;
-    s_in_buff = static_cast<size_t>(in.gcount());
+    cur_symbol = s_in_buff;
     return res;
 }
 
@@ -58,10 +56,9 @@ uint64_t file_reader::get_n_bytes(uint8_t n) { // effective n <= 8
 }
 
 void file_reader::make_n_bits_used(int8_t n) {
-    cout << "<used " << static_cast<int>(n) << " bits> ";
+    //cout << "<used " << static_cast<int>(n) << " bits> ";
     cur_code_piece >>= n;
     useful_bits -= n;  // should not be < 0
-    refill_useful_bits();
 }
 
 uint64_t file_reader::get_next_code_piece() {
@@ -74,8 +71,7 @@ inline void file_reader::refill_useful_bits() {
         cur_code_piece += static_cast<uint64_t>(get_symbol()) << useful_bits;
         useful_bits += sizeof(symbol) * 8;
 
-        cout << "<ref " << static_cast<int>(sizeof(symbol) * 8) << " bits, cur:" << cur_symbol << ", usf:"
-             << static_cast<int>(useful_bits) << "> ";
+        //cout << "<ref " << static_cast<int>(sizeof(symbol) * 8) << " bits, cur:" << cur_symbol << ", usf:" << static_cast<int>(useful_bits) << "> ";
     }
 }
 

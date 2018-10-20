@@ -28,6 +28,8 @@ struct file_writer {
 
     void print_number(int32_t x);
 
+    void print_n_bytes(uint8_t n, uint64_t val);
+
 private:
     std::ofstream out;
     symbol buffer[BUFFER_SIZE];
