@@ -7,7 +7,6 @@
 
 file_compressor::file_compressor(std::string const &file_name) : reader(file_name), compressor(
         count_symbols()) { // mb count before reader init?
-
 }
 
 void file_compressor::compress(std::string dst) {
@@ -15,14 +14,14 @@ void file_compressor::compress(std::string dst) {
 
     auto converted_tree = compressor.tree.convert();
 
-    writer.print_number(static_cast<uint32_t>(converted_tree.size()));
+    writer.print_number(static_cast<int32_t>(converted_tree.size()));
 
     for (auto &i : converted_tree) {
         writer.print_number(i.first);
         writer.print_number(i.second);
     }                                       // TREE PRINTED
 
-    std::pair<symbol *, size_t> block;
+    std::pair<symbol const *, size_t> block;
 
     while (!reader.eof()) {
         block = reader.get_block();
@@ -30,9 +29,9 @@ void file_compressor::compress(std::string dst) {
     }
 }
 
-size_t *file_compressor::count_symbols() {
-    auto res = new size_t[SYMBOL_CNT]();
-    //memset(res, 0, SYMBOL_CNT);
+std::unique_ptr<size_t[]> file_compressor::count_symbols() {
+    std::unique_ptr<size_t[]> res(new size_t[SYMBOL_CNT]);
+    //memset(res.get(), 0, SYMBOL_CNT * sizeof(size_t));
     for (size_t i = 0; i < SYMBOL_CNT; ++i) {
         res[i] = 0;
     }

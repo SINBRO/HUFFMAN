@@ -29,9 +29,9 @@ void file_writer::print(symbol s) {
     buffer[cur_symbol++] = s;
 }
 
-void file_writer::print_code(code x) {
+void file_writer::print_code(code const &x) {
     cur_part += x.value << cur_bits;
-    if (cur_bits + x.bits > 64) {
+    if (cur_bits + x.bits >= 64) {
         print_number(static_cast<int32_t>(cur_part));
         cur_part = x.value >> static_cast<uint8_t >(64 - cur_bits);
         cur_bits -= 64 - x.bits;
@@ -40,7 +40,7 @@ void file_writer::print_code(code x) {
     }
 }
 
-void file_writer::print_code_block(std::vector<code> block) {
+void file_writer::print_code_block(std::vector<code> const &block) {
     for (auto &i : block) {
         print_code(i);
     }
@@ -53,7 +53,7 @@ file_writer::~file_writer() {
 
 void file_writer::print_number(int32_t x) {
     for (uint8_t i = 0; i < sizeof(int32_t) / sizeof(symbol); ++i) {
-        print(static_cast<symbol>(SYMBOL_MAX_VALUE & static_cast<uint16_t >(x)));
+        print(static_cast<symbol>(x));
         x >>= 8 * sizeof(symbol);
     }
 }

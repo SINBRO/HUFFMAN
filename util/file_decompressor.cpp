@@ -13,7 +13,7 @@ file_decompressor::file_decompressor(std::string file_name) : reader(file_name) 
         }
         decompressor.set_tree(code_tree(converted_tree));
     } catch (...) {
-        throw std::runtime_error("Unable to get correct code tree");
+        throw std::runtime_error("Compressed file is incorrect or damaged (unable to get correct code tree)");
     }
 }
 

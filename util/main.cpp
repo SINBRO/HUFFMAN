@@ -15,7 +15,7 @@ int main(int argc, char *argv[]) {
     clock_t start, finish;
 
     if (mode == "-c") {
-        std::cerr << "Compressing " + src + "...\n";
+        std::cerr << "Compressing '" + src + "'...\n";
         start = clock();
         try {
             file_compressor compressor(src);
@@ -29,7 +29,7 @@ int main(int argc, char *argv[]) {
         std::cerr << "Successfully compressed in " + std::to_string((finish - start) * 1000 / CLOCKS_PER_SEC) + " ms";
         return 0;
     } else if (mode == "-d") {
-        std::cerr << "Decompressing " + src + "...\n";
+        std::cerr << "Decompressing '" + src + "'...\n";
         start = clock();
         try {
             file_decompressor decompressor(src);

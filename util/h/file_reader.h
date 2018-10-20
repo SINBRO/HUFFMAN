@@ -24,7 +24,7 @@ struct file_reader {
 
     void make_n_bits_used(int8_t n);
 
-    std::pair<symbol *, size_t> get_block();
+    std::pair<symbol const *, size_t> get_block();
 
     bool eof();
 
@@ -34,8 +34,8 @@ private:
     std::ifstream in;
     std::string file;
     symbol buffer[BUFFER_SIZE];
-    size_t cur_symbol;
-    size_t s_in_buff;
+    size_t cur_symbol = 0;
+    size_t s_in_buff = 0;
     uint64_t cur_code_piece = 0;
     int8_t useful_bits = 0;
 };

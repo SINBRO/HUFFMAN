@@ -20,7 +20,7 @@ struct file_compressor {
     void compress(std::string dst);
 
 private:
-    size_t *count_symbols();
+    std::unique_ptr<size_t[]> count_symbols();
 
     file_reader reader;
     file_writer writer;

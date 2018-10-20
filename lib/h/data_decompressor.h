@@ -9,7 +9,7 @@
 #include "code_tree.h"
 
 struct data_decompressor {
-    data_decompressor();
+    data_decompressor() = default;
 
     void set_tree(code_tree another_tree);
 

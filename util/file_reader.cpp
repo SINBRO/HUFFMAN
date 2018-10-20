@@ -5,7 +5,7 @@
 #include "h/file_reader.h"
 
 file_reader::file_reader(std::string const &file_name) : in(file_name, std::ifstream::binary),
-                                                         file(file_name), cur_symbol(0), s_in_buff(0) {
+                                                         file(file_name) {
     if (in.fail()) {
         in.close();
         throw std::runtime_error("Unable to open file " + file_name);
@@ -13,7 +13,7 @@ file_reader::file_reader(std::string const &file_name) : in(file_name, std::ifst
 }
 
 symbol file_reader::get_symbol() {
-    if (cur_symbol == s_in_buff) {
+    if (cur_symbol >= s_in_buff) {
         in.read(reinterpret_cast<char *>(buffer), BUFFER_SIZE);
         cur_symbol = 0;
         s_in_buff = static_cast<size_t>(in.gcount());
@@ -34,7 +34,7 @@ bool file_reader::eof() {
     return cur_symbol == s_in_buff && in.eof();
 }
 
-std::pair<symbol *, size_t> file_reader::get_block() {
+std::pair<symbol const *, size_t> file_reader::get_block() {
     auto res = std::pair<symbol *, size_t>(&buffer[cur_symbol], s_in_buff - cur_symbol);
     in.read(reinterpret_cast<char *>(buffer), BUFFER_SIZE);
     cur_symbol = 0;

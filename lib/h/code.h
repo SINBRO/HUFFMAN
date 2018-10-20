@@ -9,9 +9,11 @@
 #include <cstdint>
 
 struct code {
-    code() = default;
+    code();
 
     code(uint64_t c, uint8_t b);
+
+    code add_bit(bool val) const;
 
     uint64_t value;
     uint8_t bits;

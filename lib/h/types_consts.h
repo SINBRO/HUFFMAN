@@ -7,6 +7,8 @@
 
 #include <cstdlib>
 #include <cstdint>
+#include <memory>
+
 
 typedef unsigned char symbol;
 

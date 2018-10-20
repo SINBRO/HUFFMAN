@@ -14,58 +14,55 @@
 struct code_tree {
     code_tree() = default;
 
-    explicit code_tree(size_t freq[SYMBOL_CNT]); // SYMBOL_CNT elements
+    explicit code_tree(std::unique_ptr<size_t[]> &freq); // SYMBOL_CNT elements
 
     explicit code_tree(std::vector<std::pair<int32_t, int32_t>> &init_data);
 
+    ~code_tree();
+
     symbol decode(uint64_t code_piece);
+
+    void fill_codes(code codes[SYMBOL_CNT]);
 
     std::vector<std::pair<int32_t, int32_t>> convert();
 
     struct node {
         uint16_t sym;
-        node *child[2];
+        node const *child[2];
         size_t cnt = 0;
 
-        node() : sym(NONE), child() {
-            child[0] = nullptr;
-            child[1] = nullptr;
-        };
+        node() : sym(NONE), child{nullptr, nullptr} {};
 
-        explicit node(uint16_t s) : sym(s), child() {
-            child[0] = nullptr;
-            child[1] = nullptr;
-        };
+        explicit node(uint16_t s) : sym(s), child{nullptr, nullptr} {};
 
-        node(uint16_t s, size_t count) : sym(s), child(), cnt(count) {
-            child[0] = nullptr;
-            child[1] = nullptr;
-        };
+        node(uint16_t s, size_t count) : sym(s), child{nullptr, nullptr}, cnt(count) {};
 
-        node(node *ch1, node *ch2) : sym(NONE), child() {
-            child[0] = ch1;
-            child[1] = ch2;
-        };
+        node(node const *ch1, node const *ch2) : sym(NONE), child{ch1, ch2} {};
 
-        node(node *ch1, node *ch2, uint16_t s) : sym(s), child() {
-            child[0] = ch1;
-            child[1] = ch2;
-        };
+        node(node const *ch1, node const *ch2, uint16_t s) : sym(s), child{ch1, ch2} {};
 
-        node(node *ch1, node *ch2, uint16_t s, size_t count) : sym(s), child(), cnt(count) {
-            child[0] = ch1;
-            child[1] = ch2;
-        };
+        node(node const *ch1, node const *ch2, uint16_t s, size_t count) : sym(s), child{ch1, ch2}, cnt(count) {};
+
+        ~node() {
+            if (sym == NONE) {
+                delete child[0];
+                delete child[1];
+            }
+        }
     };
+
 
     uint8_t code_pos = 0;
 
 private:
-    int32_t convert_dfs(std::vector<std::pair<int32_t, int32_t>> v, node *x);
+    int32_t convert_dfs(std::vector<std::pair<int32_t, int32_t>> &v, node const *x);
 
     node *make_node(std::vector<std::pair<int32_t, int32_t>> &init_data, size_t i);
 
-    node head;
+    void fill_codes(code codes[SYMBOL_CNT], node const *x, code c);
+
+
+    node *head = nullptr;
 };
 
 
