@@ -30,7 +30,7 @@ struct code_tree {
 
     bool in_table_mode();
 
-    bool int_tree_mode();
+    bool in_tree_mode();
 
     void switch_to_table_mode();
 

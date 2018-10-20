@@ -114,7 +114,7 @@ bool code_tree::in_table_mode() {
     return decode_num == &code_tree::decode_by_table;
 }
 
-bool code_tree::int_tree_mode() {
+bool code_tree::in_tree_mode() {
     return decode_num == &code_tree::decode_by_tree;
 }
 
@@ -125,11 +125,13 @@ void code_tree::switch_to_tree_mode() {
 }
 
 void code_tree::switch_to_table_mode() {
-    if (int_tree_mode()) {
-        cheat_table = new std::pair<symbol, uint8_t>[CHEAT_TABLE_LENGTH];
-        for (size_t i = 0; i < CHEAT_TABLE_LENGTH; ++i) {
-            cheat_table[i].first = decode_by_tree(i);
-            cheat_table[i].second = code_pos;
+    if (in_tree_mode()) {
+        if (cheat_table == nullptr) {
+            cheat_table = new std::pair<symbol, uint8_t>[CHEAT_TABLE_LENGTH];
+            for (size_t i = 0; i < CHEAT_TABLE_LENGTH; ++i) {
+                cheat_table[i].first = decode_by_tree(i);
+                cheat_table[i].second = code_pos;
+            }
         }
         decode_num = &code_tree::decode_by_table;
     }

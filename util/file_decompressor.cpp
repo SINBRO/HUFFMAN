@@ -18,6 +18,11 @@ file_decompressor::file_decompressor(std::string file_name) : reader(file_name) 
                                         static_cast<int32_t>(reader.get_n_bytes(4)));
         }
         decompressor.set_tree(new code_tree(converted_tree));
+
+        ///
+        decompressor.tree->switch_to_table_mode();
+        ///
+
     } catch (...) {
         throw std::runtime_error("Compressed file is incorrect or damaged (unable to get correct code tree)");
     }
