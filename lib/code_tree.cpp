@@ -104,8 +104,10 @@ code_tree::~code_tree() {
 }
 
 symbol code_tree::decode_by_table(uint64_t code_piece) {
-
-    return 0;
+    if ((code_pos = cheat_table[static_cast<uint16_t>(code_piece)].second) > MAX_CODE_LENGTH) {
+        return decode_by_tree(code_piece);
+    }
+    return cheat_table[static_cast<uint16_t>(code_piece)].first;
 }
 
 bool code_tree::in_table_mode() {
