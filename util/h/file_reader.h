@@ -28,6 +28,8 @@ struct file_reader {
 
     bool eof();
 
+    bool has_useful_bits();
+
 private:
     void refill_useful_bits();
 

@@ -9,6 +9,10 @@
 #include <cstdint>
 #include <memory>
 
+// for debug:
+#include <iostream>
+using std::cout;
+//
 
 typedef uint8_t symbol;
 

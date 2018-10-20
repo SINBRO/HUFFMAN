@@ -2,10 +2,8 @@
 // Created by andrey on 11.10.18.
 //
 
-#include <iostream>
 #include "h/file_writer.h"
 
-using std::cout;
 
 file_writer::file_writer() : cur_symbol(0) {}
 
@@ -26,7 +24,7 @@ void file_writer::set_file(std::string const &dst) {
 
 void file_writer::print(symbol s) {
     //!!!!!!!!!!
-    cout << static_cast<int>(s) << ' ';
+    cout << "<print " << static_cast<int>(s) << "> ";
 
     if (cur_symbol == BUFFER_SIZE) {
         out.write(reinterpret_cast<const char *>(buffer), BUFFER_SIZE * sizeof(symbol) / sizeof(char));
