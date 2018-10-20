@@ -41,8 +41,15 @@ bool file_reader::eof() {
 }
 
 std::pair<symbol const *, size_t> file_reader::get_block() {
+    if (cur_symbol >= s_in_buff) {
+        in.read(reinterpret_cast<char *>(buffer), BUFFER_SIZE * sizeof(symbol) / sizeof(char));
+        cur_symbol = 0;
+        s_in_buff = static_cast<size_t>(in.gcount()) * sizeof(char) / sizeof(symbol);
+    }
     auto res = std::pair<symbol *, size_t>(&buffer[cur_symbol], s_in_buff - cur_symbol);
+    //cout << "<got block of " << s_in_buff - cur_symbol << "> ";
     cur_symbol = s_in_buff;
+
     return res;
 }
 
@@ -51,6 +58,14 @@ uint64_t file_reader::get_n_bytes(uint8_t n) { // effective n <= 8
     for (int i = 0; i < n; ++i) {
         res <<= 8;
         res += get_symbol();
+    }
+    return res;
+}
+
+uint64_t file_reader::get_n_bytes_r(uint8_t n) {
+    uint64_t res = 0;
+    for (int i = 0; i < n; ++i) {
+        res |= static_cast<uint64_t>(get_symbol()) << (8*i);
     }
     return res;
 }
@@ -76,5 +91,5 @@ inline void file_reader::refill_useful_bits() {
 }
 
 bool file_reader::has_useful_bits() {
-    return useful_bits != 0;
+    return useful_bits > 0;
 }

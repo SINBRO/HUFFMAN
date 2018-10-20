@@ -22,6 +22,7 @@ struct file_compressor {
 private:
     std::unique_ptr<size_t[]> count_symbols();
 
+    size_t symbols_in_file = 0;
     file_reader reader;
     file_writer writer;
     data_compressor compressor;

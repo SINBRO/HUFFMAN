@@ -20,6 +20,8 @@ struct file_reader {
 
     uint64_t get_n_bytes(uint8_t n);
 
+    uint64_t get_n_bytes_r(uint8_t n);
+
     uint64_t get_next_code_piece();
 
     void make_n_bits_used(int8_t n);

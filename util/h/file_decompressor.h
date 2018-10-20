@@ -19,6 +19,7 @@ struct file_decompressor {
     void decompress(std::string dst);
 
 private:
+    size_t symbols_in_file = 0;
     data_decompressor decompressor;
     file_reader reader;
     file_writer writer;

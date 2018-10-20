@@ -14,6 +14,7 @@ void file_compressor::compress(std::string dst) {
 
     auto converted_tree = compressor.tree.convert();
 
+    writer.print_n_bytes(8, symbols_in_file);
     writer.print_number(static_cast<int32_t>(converted_tree.size()));
 
     for (auto &i : converted_tree) {
@@ -37,6 +38,7 @@ std::unique_ptr<size_t[]> file_compressor::count_symbols() {
     }
     while (!reader.eof()) {
         ++res[reader.get_symbol()];
+        ++symbols_in_file;
     }
 
     reader.restart();

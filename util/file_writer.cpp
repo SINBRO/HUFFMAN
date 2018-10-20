@@ -34,7 +34,7 @@ void file_writer::print(symbol s) {
 }
 
 void file_writer::print_code(code const &x) {
-    cur_part += x.value << cur_bits;
+    cur_part |= x.value << cur_bits;
     if (cur_bits + x.bits >= 64) {
         print_n_bytes(8, cur_part);
         cur_part = x.value >> static_cast<uint8_t >(64 - cur_bits);
@@ -51,7 +51,10 @@ void file_writer::print_code_block(std::vector<code> const &block) {
 }
 
 file_writer::~file_writer() {
-    out.write(reinterpret_cast<const char *>(buffer), cur_symbol);
+    if (cur_bits != 0) {
+        print_n_bytes(static_cast<uint8_t>((cur_bits + 7) / 8), cur_part);
+    }
+    out.write(reinterpret_cast<const char *>(buffer), cur_symbol* sizeof(symbol) / sizeof(char));
     out.close();
 }
 

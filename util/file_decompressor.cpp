@@ -6,6 +6,8 @@
 
 file_decompressor::file_decompressor(std::string file_name) : reader(file_name) {
     try {
+        symbols_in_file = reader.get_n_bytes_r(8);
+
         auto converted_tree_size = static_cast<uint32_t>(reader.get_n_bytes(4));
         if (converted_tree_size > SYMBOL_CNT*4) {
             throw;
@@ -22,7 +24,8 @@ file_decompressor::file_decompressor(std::string file_name) : reader(file_name) 
 
 void file_decompressor::decompress(std::string dst) {
     writer.set_file(dst);
-    while (!reader.eof() || reader.has_useful_bits()) {
+    //while (!reader.eof() || reader.has_useful_bits()) {
+    for (int i = 0; i < symbols_in_file; ++i) {
         writer.print(decompressor.decode(reader.get_next_code_piece()));
         reader.make_n_bits_used(decompressor.code_pos()); // code_pos() seems to be ok
     }
