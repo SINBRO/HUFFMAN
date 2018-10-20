@@ -10,7 +10,7 @@ file_decompressor::file_decompressor(std::string file_name) : reader(file_name) 
 
         auto converted_tree_size = static_cast<uint32_t>(reader.get_n_bytes(4));
         if (converted_tree_size > SYMBOL_CNT * 4) {
-            throw;
+            throw std::runtime_error("");
         }
         auto converted_tree = std::vector<std::pair<int32_t, int32_t>>();
         for (uint32_t i = 0; i < converted_tree_size; ++i) {
@@ -30,4 +30,9 @@ void file_decompressor::decompress(std::string dst) {
         writer.print(decompressor.decode(reader.get_next_code_piece()));
         reader.make_n_bits_used(decompressor.code_pos()); // code_pos() seems to be ok
     }
+}
+
+void file_decompressor::decompress(std::string const &src, std::string const &dst) {
+    file_decompressor decompressor(src);
+    decompressor.decompress(dst);
 }

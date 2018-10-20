@@ -12,6 +12,8 @@ file_reader::file_reader(std::string const &file_name) : in(file_name, std::ifst
     }
 }
 
+
+
 symbol file_reader::get_symbol() {
     if (cur_symbol >= s_in_buff) {
         if (in.eof()) {
@@ -30,6 +32,7 @@ void file_reader::restart() {
     //cout << "<restart> ";
     in.close();
     in.open(file);
+    cur_symbol = s_in_buff = 0;
     if (in.fail()) {
         in.close();
         throw std::runtime_error("Lost access to file " + file);
@@ -40,12 +43,16 @@ bool file_reader::eof() {
     return cur_symbol >= s_in_buff && in.eof();
 }
 
-std::pair<symbol const *, size_t> file_reader::get_block() {
+void file_reader::upload() {
     if (cur_symbol >= s_in_buff) {
         in.read(reinterpret_cast<char *>(buffer), BUFFER_SIZE * sizeof(symbol) / sizeof(char));
         cur_symbol = 0;
         s_in_buff = static_cast<size_t>(in.gcount()) * sizeof(char) / sizeof(symbol);
     }
+}
+
+std::pair<symbol const *, size_t> file_reader::get_block() {
+    upload();
     auto res = std::pair<symbol *, size_t>(&buffer[cur_symbol], s_in_buff - cur_symbol);
     //cout << "<got block of " << s_in_buff - cur_symbol << "> ";
     cur_symbol = s_in_buff;

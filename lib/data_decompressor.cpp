@@ -10,7 +10,7 @@ void data_decompressor::set_tree(code_tree *another_tree) {
 }
 
 symbol data_decompressor::decode(uint64_t code_piece) {
-    return tree->decode(code_piece); // code_pos in tree
+    return (tree->*(tree->decode_num))(code_piece); // code_pos in tree
 }
 
 uint8_t data_decompressor::code_pos() {

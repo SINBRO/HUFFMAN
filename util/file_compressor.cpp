@@ -24,7 +24,7 @@ void file_compressor::compress(std::string dst) {
 
     std::pair<symbol const *, size_t> block;
 
-    while (!reader.eof()) {
+    for (uint64_t j = 0; j < symbols_in_file; ++j) {
         block = reader.get_block();
         writer.print_code_block(compressor.compress(block.first, block.second));
     }
@@ -36,6 +36,7 @@ std::unique_ptr<size_t[]> file_compressor::count_symbols() {
     for (size_t i = 0; i < SYMBOL_CNT; ++i) {
         res[i] = 0;
     }
+    reader.upload();
     while (!reader.eof()) {
         ++res[reader.get_symbol()];
         ++symbols_in_file;
@@ -43,4 +44,9 @@ std::unique_ptr<size_t[]> file_compressor::count_symbols() {
 
     reader.restart();
     return res;
+}
+
+void file_compressor::compress(std::string const &src, std::string const &dst) {
+    file_compressor compressor(src);
+    compressor.compress(dst);
 }

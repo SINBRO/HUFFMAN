@@ -18,8 +18,7 @@ int main(int argc, char *argv[]) {
         std::cerr << "Compressing '" + src + "'...\n";
         start = clock();
         try {
-            file_compressor compressor(src);
-            compressor.compress(dst);
+            file_compressor::compress(src, dst);
         } catch (std::runtime_error &e) {
             std::cerr << "Unable to compress: ";
             std::cerr << e.what();
@@ -32,8 +31,7 @@ int main(int argc, char *argv[]) {
         std::cerr << "Decompressing '" + src + "'...\n";
         start = clock();
         try {
-            file_decompressor decompressor(src);
-            decompressor.decompress(dst);
+            file_decompressor::decompress(src, dst);
         } catch (std::runtime_error &e) {
             std::cerr << "Unable to decompress: ";
             std::cerr << e.what();

@@ -12,6 +12,8 @@
 #include "../../lib/h/data_decompressor.h"
 
 struct file_decompressor {
+    static void decompress(std::string const & src, std::string const &dst);
+
     file_decompressor() = delete;
 
     explicit file_decompressor(std::string file_name);

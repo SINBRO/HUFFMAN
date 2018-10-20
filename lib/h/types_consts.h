@@ -17,7 +17,8 @@ using std::cout;
 
 typedef uint8_t symbol;
 
-const symbol SYMBOL_MAX_VALUE = UINT8_MAX;
+const uint8_t MAX_CODE_LENGTH = 16;
+const size_t CHEAT_TABLE_LENGTH = 1 << MAX_CODE_LENGTH;
 const size_t SYMBOL_CNT = (size_t) 1 << static_cast<uint8_t>(sizeof(symbol) * 8);
 const uint16_t NONE = UINT16_MAX;
 const size_t BUFFER_SIZE = (size_t) 1 << static_cast<uint8_t>(10);
