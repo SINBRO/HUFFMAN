@@ -18,9 +18,7 @@ uint8_t data_decompressor::code_pos() {
 }
 
 data_decompressor::~data_decompressor() {
-    if (tree != nullptr) {
-        delete tree;
-    }
+    delete tree;
 }
 
 data_decompressor::data_decompressor() : tree(nullptr) {
