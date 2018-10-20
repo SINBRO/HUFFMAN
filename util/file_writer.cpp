@@ -54,12 +54,12 @@ file_writer::~file_writer() {
     if (cur_bits != 0) {
         print_n_bytes(static_cast<uint8_t>((cur_bits + 7) / 8), cur_part);
     }
-    out.write(reinterpret_cast<const char *>(buffer), cur_symbol* sizeof(symbol) / sizeof(char));
+    out.write(reinterpret_cast<const char *>(buffer), cur_symbol * sizeof(symbol) / sizeof(char));
     out.close();
 }
 
 void file_writer::print_number(int32_t x) {
-    uint8_t shift = 8*(sizeof(int32_t) - sizeof(symbol));
+    uint8_t shift = 8 * (sizeof(int32_t) - sizeof(symbol));
     for (uint8_t i = 0; i < sizeof(int32_t) / sizeof(symbol); ++i) {
         print(static_cast<symbol>(x >> shift));
         shift -= 8 * sizeof(symbol);

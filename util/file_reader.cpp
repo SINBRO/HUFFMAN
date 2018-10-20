@@ -65,7 +65,7 @@ uint64_t file_reader::get_n_bytes(uint8_t n) { // effective n <= 8
 uint64_t file_reader::get_n_bytes_r(uint8_t n) {
     uint64_t res = 0;
     for (int i = 0; i < n; ++i) {
-        res |= static_cast<uint64_t>(get_symbol()) << (8*i);
+        res |= static_cast<uint64_t>(get_symbol()) << (8 * i);
     }
     return res;
 }

@@ -22,7 +22,7 @@ struct file_writer {
 
     void print(symbol s);
 
-    void print_code(code  const &x);
+    void print_code(code const &x);
 
     void print_code_block(std::vector<code> const &block);
 
