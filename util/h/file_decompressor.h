@@ -20,6 +20,8 @@ struct file_decompressor {
 
     void decompress(std::string dst);
 
+    uint64_t file_bytes_cnt();
+
 private:
     size_t symbols_in_file = 0;
     data_decompressor decompressor;

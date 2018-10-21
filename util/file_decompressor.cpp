@@ -41,3 +41,7 @@ void file_decompressor::decompress(std::string const &src, std::string const &ds
     file_decompressor decompressor(src);
     decompressor.decompress(dst);
 }
+
+uint64_t file_decompressor::file_bytes_cnt() {
+    return symbols_in_file * sizeof(symbol);
+}

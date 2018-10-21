@@ -21,6 +21,8 @@ struct file_compressor {
 
     void compress(std::string dst);
 
+    uint64_t file_bytes_cnt();
+
 private:
     std::unique_ptr<size_t[]> count_symbols();
 

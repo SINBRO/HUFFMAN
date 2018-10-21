@@ -50,3 +50,7 @@ void file_compressor::compress(std::string const &src, std::string const &dst) {
     file_compressor compressor(src);
     compressor.compress(dst);
 }
+
+uint64_t file_compressor::file_bytes_cnt() {
+    return symbols_in_file * sizeof(symbol);
+}
