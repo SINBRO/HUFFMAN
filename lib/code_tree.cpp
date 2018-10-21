@@ -5,7 +5,12 @@
 #include <queue>
 #include "h/code_tree.h"
 
+code_tree::code_tree() {
+    decode_num = &code_tree::decode_by_tree;
+}
+
 code_tree::code_tree(std::unique_ptr<size_t[]> &freq) {
+    decode_num = &code_tree::decode_by_tree;
     struct node_cmp {
         bool operator()(node *lhs, node *rhs) const {
             return lhs->cnt > rhs->cnt;
@@ -19,6 +24,10 @@ code_tree::code_tree(std::unique_ptr<size_t[]> &freq) {
             queue.push(new node(static_cast<uint16_t>(i), freq[i]));
         }
     }
+    if (queue.empty()) {
+        head = new node(0);
+        return;
+    }
     node const *node1, *node2;
     while (queue.size() > 1) {
         node1 = queue.top();
@@ -31,10 +40,11 @@ code_tree::code_tree(std::unique_ptr<size_t[]> &freq) {
 }
 
 code_tree::code_tree(std::vector<std::pair<int32_t, int32_t>> &init_data) {
+    decode_num = &code_tree::decode_by_tree;
     head = make_node(init_data, init_data.size() - 1);
 }
 
-symbol code_tree::decode(uint64_t code_piece) {
+symbol code_tree::decode_by_tree(uint64_t code_piece) {
     node const *x = head;
     code_pos = 0;
     while (x->sym == NONE) {
@@ -90,4 +100,39 @@ void code_tree::fill_codes(code *codes, const code_tree::node *x, code c) {
 
 code_tree::~code_tree() {
     delete head;
+    delete cheat_table;
+}
+
+symbol code_tree::decode_by_table(uint64_t code_piece) {
+    if ((code_pos = cheat_table[static_cast<uint16_t>(code_piece)].second) > MAX_CODE_LENGTH) {
+        return decode_by_tree(code_piece);
+    }
+    return cheat_table[static_cast<uint16_t>(code_piece)].first;
+}
+
+bool code_tree::in_table_mode() {
+    return decode_num == &code_tree::decode_by_table;
+}
+
+bool code_tree::in_tree_mode() {
+    return decode_num == &code_tree::decode_by_tree;
+}
+
+void code_tree::switch_to_tree_mode() {
+    if (in_table_mode()) {
+        decode_num = &code_tree::decode_by_tree;
+    }
+}
+
+void code_tree::switch_to_table_mode() {
+    if (in_tree_mode()) {
+        if (cheat_table == nullptr) {
+            cheat_table = new std::pair<symbol, uint8_t>[CHEAT_TABLE_LENGTH];
+            for (size_t i = 0; i < CHEAT_TABLE_LENGTH; ++i) {
+                cheat_table[i].first = decode_by_tree(i);
+                cheat_table[i].second = code_pos;
+            }
+        }
+        decode_num = &code_tree::decode_by_table;
+    }
 }

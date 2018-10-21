@@ -13,12 +13,14 @@ int main(int argc, char *argv[]) {
     src = argv[2];
     dst = argv[3];
     clock_t start, finish;
+    size_t file_size;
 
     if (mode == "-c") {
         std::cerr << "Compressing '" + src + "'...\n";
         start = clock();
         try {
             file_compressor compressor(src);
+            file_size = compressor.file_bytes_cnt();
             compressor.compress(dst);
         } catch (std::runtime_error &e) {
             std::cerr << "Unable to compress: ";
@@ -26,13 +28,16 @@ int main(int argc, char *argv[]) {
             return -1;
         }
         finish = clock();
-        std::cerr << "Successfully compressed in " + std::to_string((finish - start) * 1000 / CLOCKS_PER_SEC) + " ms";
+        std::cerr << "Successfully compressed " << double(file_size) / (1 << 20)
+                  << "mb in " + std::to_string((finish - start) * 1000 / CLOCKS_PER_SEC) + " ms ("
+                  << double(file_size) / (1 << 20) / (double(finish - start) / CLOCKS_PER_SEC) << " mb/s)";
         return 0;
     } else if (mode == "-d") {
-        std::cerr << "Decompressing '" + src + "'...\n";
+        std::cerr << "Decompressing \"" + src + "\"...\n";
         start = clock();
         try {
             file_decompressor decompressor(src);
+            file_size = decompressor.file_bytes_cnt();
             decompressor.decompress(dst);
         } catch (std::runtime_error &e) {
             std::cerr << "Unable to decompress: ";
@@ -40,7 +45,9 @@ int main(int argc, char *argv[]) {
             return -1;
         }
         finish = clock();
-        std::cerr << "Successfully decompressed in " + std::to_string((finish - start) * 1000 / CLOCKS_PER_SEC) + " ms";
+        std::cerr << "Successfully decompressed " << double(file_size) / (1 << 20)
+                  << "mb in " + std::to_string((finish - start) * 1000 / CLOCKS_PER_SEC) + " ms ("
+                  << double(file_size) / (1 << 20) / (double(finish - start) / CLOCKS_PER_SEC) << " mb/s)";
         return 0;
 
     } else {

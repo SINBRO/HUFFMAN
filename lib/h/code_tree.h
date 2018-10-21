@@ -12,7 +12,7 @@
 #include <cstdint>
 
 struct code_tree {
-    code_tree() = default;
+    code_tree();
 
     explicit code_tree(std::unique_ptr<size_t[]> &freq); // SYMBOL_CNT elements
 
@@ -20,9 +20,23 @@ struct code_tree {
 
     ~code_tree();
 
-    symbol decode(uint64_t code_piece);
+    symbol decode_by_tree(uint64_t code_piece);
+
+    symbol decode_by_table(uint64_t code_piece);
 
     void fill_codes(code codes[SYMBOL_CNT]);
+
+    typedef symbol (code_tree::*Decode) (uint64_t);
+
+    bool in_table_mode();
+
+    bool in_tree_mode();
+
+    void switch_to_table_mode();
+
+    void switch_to_tree_mode();
+
+    Decode decode_num;
 
     std::vector<std::pair<int32_t, int32_t>> convert();
 
@@ -59,6 +73,7 @@ private:
 
     void fill_codes(code codes[SYMBOL_CNT], node const *x, code c);
 
+    std::pair<symbol, uint8_t> * cheat_table = nullptr;
 
     node *head = nullptr;
 };

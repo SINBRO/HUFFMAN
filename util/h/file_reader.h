@@ -16,6 +16,8 @@ struct file_reader {
 
     void restart();
 
+    void upload();
+
     symbol get_symbol();
 
     uint64_t get_n_bytes(uint8_t n);

@@ -8,3 +8,10 @@ endif()
 
 add_subdirectory(lib)
 add_subdirectory(util)
+
+#[[add_executable(tests
+        gtest/gtest_main.cc
+        gtest/haffman_algo_tests.cpp
+        gtest/gtest.h
+        gtest/gtest-all.cc
+        gtest/gtest_main.cc)]]

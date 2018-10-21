@@ -13,11 +13,15 @@
 #include <string>
 
 struct file_compressor {
+    static void compress(std::string const & src, std::string const & dst);
+
     file_compressor() = delete;
 
     explicit file_compressor(std::string const &file_name);
 
     void compress(std::string dst);
+
+    uint64_t file_bytes_cnt();
 
 private:
     std::unique_ptr<size_t[]> count_symbols();
@@ -27,6 +31,7 @@ private:
     file_writer writer;
     data_compressor compressor;
 };
+
 
 
 #endif //HUFFMAN_FILE_COMPRESSOR_H

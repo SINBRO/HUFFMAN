@@ -19,7 +19,6 @@ struct data_decompressor {
 
     uint8_t code_pos();
 
-private:
     code_tree *tree;
 };
 
