@@ -5,9 +5,7 @@
 #ifndef HUFFMAN_DATA_COMPRESSOR_H
 #define HUFFMAN_DATA_COMPRESSOR_H
 
-#include "types_consts.h"
 #include "code_tree.h"
-#include "code.h"
 
 struct data_compressor {
     data_compressor() = delete;

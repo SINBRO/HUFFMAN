@@ -9,14 +9,15 @@
 #include "types_consts.h"
 #include "code.h"
 #include <vector>
-#include <cstdint>
 
 struct code_tree {
+    typedef symbol (code_tree::*Decode) (uint64_t);
+
     code_tree();
 
     explicit code_tree(std::unique_ptr<size_t[]> &freq); // SYMBOL_CNT elements
 
-    explicit code_tree(std::vector<std::pair<int32_t, int32_t>> &init_data);
+    explicit code_tree(std::vector<std::pair<int32_t, int32_t>> const &init_data);
 
     ~code_tree();
 
@@ -24,9 +25,9 @@ struct code_tree {
 
     symbol decode_by_table(uint64_t code_piece);
 
-    void fill_codes(code codes[SYMBOL_CNT]);
+    symbol decode_by_table_only(uint64_t code_piece);
 
-    typedef symbol (code_tree::*Decode) (uint64_t);
+    void fill_codes(code codes[SYMBOL_CNT]);
 
     bool in_table_mode();
 
@@ -69,7 +70,7 @@ struct code_tree {
 private:
     int32_t convert_dfs(std::vector<std::pair<int32_t, int32_t>> &v, node const *x);
 
-    node *make_node(std::vector<std::pair<int32_t, int32_t>> &init_data, size_t i);
+    node *make_node(std::vector<std::pair<int32_t, int32_t>> const &init_data, size_t i);
 
     void fill_codes(code codes[SYMBOL_CNT], node const *x, code c);
 

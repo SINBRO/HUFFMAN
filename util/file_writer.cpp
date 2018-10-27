@@ -67,7 +67,7 @@ void file_writer::print_number(int32_t x) {
 }
 
 void file_writer::print_n_bytes(uint8_t n, uint64_t val) {
-    for (int i = 0; i < n; ++i) {
+    for (uint8_t i = 0; i != n; ++i) {
         print(static_cast<symbol>(val));
         val >>= 8 * sizeof(symbol);
     }

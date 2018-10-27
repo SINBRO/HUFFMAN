@@ -6,7 +6,6 @@
 #define HUFFMAN_FILE_READER_H
 
 #include "../../lib/h/types_consts.h"
-#include <string>
 #include <fstream>
 
 struct file_reader {

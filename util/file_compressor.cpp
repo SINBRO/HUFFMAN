@@ -3,13 +3,12 @@
 //
 
 #include "h/file_compressor.h"
-#include <cstring>
 
 file_compressor::file_compressor(std::string const &file_name) : reader(file_name), compressor(
         count_symbols()) {
 }
 
-void file_compressor::compress(std::string dst) {
+void file_compressor::compress(std::string const &dst) {
     writer.set_file(dst);
 
     auto converted_tree = compressor.tree.convert();

@@ -4,7 +4,7 @@
 
 #include "h/file_decompressor.h"
 
-file_decompressor::file_decompressor(std::string file_name) : reader(file_name) {
+file_decompressor::file_decompressor(std::string const &file_name) : reader(file_name) {
     try {
         symbols_in_file = reader.get_n_bytes_r(8);
 
@@ -28,7 +28,7 @@ file_decompressor::file_decompressor(std::string file_name) : reader(file_name) 
     }
 }
 
-void file_decompressor::decompress(std::string dst) {
+void file_decompressor::decompress(std::string const &dst) {
     writer.set_file(dst);
     //while (!reader.eof() || reader.has_useful_bits()) {
     for (uint64_t i = 0; i < symbols_in_file; ++i) {

@@ -39,7 +39,7 @@ code_tree::code_tree(std::unique_ptr<size_t[]> &freq) {
     head = queue.top();
 }
 
-code_tree::code_tree(std::vector<std::pair<int32_t, int32_t>> &init_data) {
+code_tree::code_tree(std::vector<std::pair<int32_t, int32_t>> const &init_data) {
     decode_num = &code_tree::decode_by_tree;
     head = make_node(init_data, init_data.size() - 1);
 }
@@ -54,7 +54,7 @@ symbol code_tree::decode_by_tree(uint64_t code_piece) {
 }
 
 code_tree::node *
-code_tree::make_node(std::vector<std::pair<int32_t, int32_t>> &init_data, size_t i) { //!!! MB INFINITE RECURSION
+code_tree::make_node(std::vector<std::pair<int32_t, int32_t>> const &init_data, size_t i) { //!!! MB INFINITE RECURSION
     node *res, *ch1, *ch2;
     if (init_data[i].second == -1) {
         res = new node(static_cast<uint16_t>(init_data[i].first));
@@ -85,7 +85,7 @@ int32_t code_tree::convert_dfs(std::vector<std::pair<int32_t, int32_t>> &v, code
     return static_cast<int32_t>(v.size() - 1);
 }
 
-void code_tree::fill_codes(code *codes) {
+void code_tree::fill_codes(code codes[SYMBOL_CNT]) {
     fill_codes(codes, head, code());
 }
 
@@ -100,13 +100,17 @@ void code_tree::fill_codes(code *codes, const code_tree::node *x, code c) {
 
 code_tree::~code_tree() {
     delete head;
-    delete cheat_table;
+    delete[] cheat_table;
 }
 
 symbol code_tree::decode_by_table(uint64_t code_piece) {
     if ((code_pos = cheat_table[static_cast<uint16_t>(code_piece)].second) > MAX_CODE_LENGTH) {
         return decode_by_tree(code_piece);
     }
+    return cheat_table[static_cast<uint16_t>(code_piece)].first;
+}
+
+symbol code_tree::decode_by_table_only(uint64_t code_piece) {
     return cheat_table[static_cast<uint16_t>(code_piece)].first;
 }
 
@@ -126,13 +130,19 @@ void code_tree::switch_to_tree_mode() {
 
 void code_tree::switch_to_table_mode() {
     if (in_tree_mode()) {
+        uint8_t max_code_length = 0;
         if (cheat_table == nullptr) {
             cheat_table = new std::pair<symbol, uint8_t>[CHEAT_TABLE_LENGTH];
             for (size_t i = 0; i < CHEAT_TABLE_LENGTH; ++i) {
                 cheat_table[i].first = decode_by_tree(i);
                 cheat_table[i].second = code_pos;
+                max_code_length = std::max(max_code_length, code_pos);
             }
         }
-        decode_num = &code_tree::decode_by_table;
+        if (max_code_length <= MAX_CODE_LENGTH) {
+            decode_num = &code_tree::decode_by_table_only;
+        } else {
+            decode_num = &code_tree::decode_by_table;
+        }
     }
 }

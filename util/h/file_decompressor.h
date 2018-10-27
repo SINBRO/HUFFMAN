@@ -5,22 +5,20 @@
 #ifndef HUFFMAN_FILE_DECOMPRESSOR_H
 #define HUFFMAN_FILE_DECOMPRESSOR_H
 
-
-#include <string>
+#include "../../lib/h/data_decompressor.h"
 #include "file_reader.h"
 #include "file_writer.h"
-#include "../../lib/h/data_decompressor.h"
 
 struct file_decompressor {
-    static void decompress(std::string const & src, std::string const &dst);
-
     file_decompressor() = delete;
 
-    explicit file_decompressor(std::string file_name);
+    explicit file_decompressor(std::string const &file_name);
 
-    void decompress(std::string dst);
+    void decompress(std::string const &dst);
 
     uint64_t file_bytes_cnt();
+
+    static void decompress(std::string const & src, std::string const &dst);
 
 private:
     size_t symbols_in_file = 0;

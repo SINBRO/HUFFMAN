@@ -8,7 +8,6 @@
 
 #include <fstream>
 #include <vector>
-#include "../../lib/h/types_consts.h"
 #include "../../lib/h/code.h"
 
 struct file_writer {
