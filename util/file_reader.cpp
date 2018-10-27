@@ -8,7 +8,7 @@ file_reader::file_reader(std::string const &file_name) : in(file_name, std::ifst
                                                          file(file_name) {
     if (in.fail()) {
         in.close();
-        throw std::runtime_error("Unable to open file " + file_name);
+        throw std::runtime_error("Unable to open file \"" + file_name + "\"");
     }
 }
 
@@ -35,7 +35,7 @@ void file_reader::restart() {
     cur_symbol = s_in_buff = 0;
     if (in.fail()) {
         in.close();
-        throw std::runtime_error("Lost access to file " + file);
+        throw std::runtime_error("Lost access to file \"" + file + "\"");
     }
 }
 

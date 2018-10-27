@@ -36,8 +36,8 @@ set(SOURCES
 
         gtest_main.cc
         gtest-all.cc
-        huffman_tests.cpp)
+        ../util/huffman_tests.cpp)
 
 add_executable(test ${HEADERS} ${SOURCES})
 
-target_link_libraries(test huf_lib)
+target_link_libraries(test -lpthread)
