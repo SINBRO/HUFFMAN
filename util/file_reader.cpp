@@ -53,7 +53,7 @@ void file_reader::upload() {
 
 std::pair<symbol const *, uint64_t> file_reader::get_block() {
     upload();
-    auto res = std::pair<symbol *, uint64_t>(buffer + cur_symbol, s_in_buff - cur_symbol);
+    auto res = std::pair<symbol const *, uint64_t>(buffer + cur_symbol, s_in_buff - cur_symbol);
     //cout << "<got block of " << s_in_buff - cur_symbol << "> ";
     cur_symbol = s_in_buff;
 
