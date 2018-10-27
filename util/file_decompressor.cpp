@@ -48,9 +48,8 @@ void file_decompressor::decompress(std::string const &dst) {
 }
 
 void file_decompressor::decompress(std::string const &src, std::string const &dst) {
-    auto *decompressor = new file_decompressor(src);
-    decompressor->decompress(dst);
-    delete decompressor;
+    file_decompressor compressor(src);
+    compressor.decompress(dst);
 }
 
 uint64_t file_decompressor::file_bytes_cnt() {

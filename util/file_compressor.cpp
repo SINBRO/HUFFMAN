@@ -50,9 +50,8 @@ std::unique_ptr<uint64_t[]> file_compressor::count_symbols() {
 }
 
 void file_compressor::compress(std::string const &src, std::string const &dst) {
-    auto *compressor = new file_compressor(src);
-    compressor->compress(dst);
-    delete compressor;
+    file_compressor compressor(src);
+    compressor.compress(dst);
 }
 
 uint64_t file_compressor::file_bytes_cnt() {
