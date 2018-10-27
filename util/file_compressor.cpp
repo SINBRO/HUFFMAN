@@ -25,11 +25,11 @@ void file_compressor::compress(std::string const &dst) {
         writer.print_number(i.second);
     }                                       // TREE PRINTED
 
-    std::pair<symbol const *, uint64_t> block;
+    //std::pair<symbol const *, uint64_t> block;
 
     for (uint64_t j = 0; j < symbols_in_file; ++j) {
-        block = reader.get_block();
-        writer.print_code_block(compressor.compress(block));
+        //block = reader.get_block();
+        writer.print_code_block(compressor.compress(reader.get_block()));
     }
 }
 

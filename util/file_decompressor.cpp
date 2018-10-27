@@ -38,9 +38,12 @@ file_decompressor::file_decompressor(std::string const &file_name) : reader(file
 void file_decompressor::decompress(std::string const &dst) {
     writer.set_file(dst);
     //while (!reader.eof() || reader.has_useful_bits()) {
-    for (uint64_t i = 0; i < symbols_in_file; ++i) {
+    for (uint64_t i = 0; i != symbols_in_file; ++i) {
         writer.print(decompressor.decode(reader.get_next_code_piece()));
         reader.make_n_bits_used(decompressor.code_pos()); // code_pos() seems to be ok
+        /*if (decompressor.code_pos() >= 56) {
+            throw std::runtime_error("too_long_code");
+        }*/
     }
 }
 

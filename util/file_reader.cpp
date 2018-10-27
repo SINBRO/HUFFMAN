@@ -53,7 +53,7 @@ void file_reader::upload() {
 
 std::pair<symbol const *, uint64_t> file_reader::get_block() {
     upload();
-    auto res = std::pair<symbol *, uint64_t>(&buffer[cur_symbol], s_in_buff - cur_symbol);
+    auto res = std::pair<symbol *, uint64_t>(buffer + cur_symbol, s_in_buff - cur_symbol);
     //cout << "<got block of " << s_in_buff - cur_symbol << "> ";
     cur_symbol = s_in_buff;
 
@@ -90,7 +90,7 @@ uint64_t file_reader::get_next_code_piece() {
 }
 
 inline void file_reader::refill_useful_bits() {
-    while (useful_bits <= static_cast<uint8_t>(64 - sizeof(symbol) * 8) && !eof()) {
+    while ((useful_bits <= static_cast<uint8_t>(64 - sizeof(symbol) * 8)) && !eof()) {
         cur_code_piece += static_cast<uint64_t>(get_symbol()) << useful_bits;
         useful_bits += sizeof(symbol) * 8;
 
