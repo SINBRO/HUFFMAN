@@ -6,7 +6,6 @@
 #define HUFFMAN_CODE_WORD_H
 
 #include "types_consts.h"
-#include <cstdint>
 
 struct code {
     code();

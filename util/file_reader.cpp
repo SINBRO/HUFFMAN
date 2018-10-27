@@ -8,7 +8,7 @@ file_reader::file_reader(std::string const &file_name) : in(file_name, std::ifst
                                                          file(file_name) {
     if (in.fail()) {
         in.close();
-        throw std::runtime_error("Unable to open file " + file_name);
+        throw std::runtime_error("Unable to open file \"" + file_name + "\"");
     }
 }
 
@@ -21,7 +21,7 @@ symbol file_reader::get_symbol() {
         }
         in.read(reinterpret_cast<char *>(buffer), BUFFER_SIZE * sizeof(symbol) / sizeof(char));
         cur_symbol = 0;
-        s_in_buff = static_cast<size_t>(in.gcount()) * sizeof(char) / sizeof(symbol);
+        s_in_buff = static_cast<uint64_t>(in.gcount()) * sizeof(char) / sizeof(symbol);
 
         //cout << "<read new BUFFER " << (in.eof() ? "eof" : "!eof") << ' ' << s_in_buff << "> ";
     }
@@ -35,11 +35,11 @@ void file_reader::restart() {
     cur_symbol = s_in_buff = 0;
     if (in.fail()) {
         in.close();
-        throw std::runtime_error("Lost access to file " + file);
+        throw std::runtime_error("Lost access to file \"" + file + "\"");
     }
 }
 
-bool file_reader::eof() {
+bool file_reader::eof() const {
     return cur_symbol >= s_in_buff && in.eof();
 }
 
@@ -47,13 +47,13 @@ void file_reader::upload() {
     if (cur_symbol >= s_in_buff) {
         in.read(reinterpret_cast<char *>(buffer), BUFFER_SIZE * sizeof(symbol) / sizeof(char));
         cur_symbol = 0;
-        s_in_buff = static_cast<size_t>(in.gcount()) * sizeof(char) / sizeof(symbol);
+        s_in_buff = static_cast<uint64_t>(in.gcount()) * sizeof(char) / sizeof(symbol);
     }
 }
 
-std::pair<symbol const *, size_t> file_reader::get_block() {
+std::pair<symbol const *, uint64_t> file_reader::get_block() {
     upload();
-    auto res = std::pair<symbol *, size_t>(&buffer[cur_symbol], s_in_buff - cur_symbol);
+    auto res = std::pair<symbol *, uint64_t>(buffer + cur_symbol, s_in_buff - cur_symbol);
     //cout << "<got block of " << s_in_buff - cur_symbol << "> ";
     cur_symbol = s_in_buff;
 
@@ -62,17 +62,18 @@ std::pair<symbol const *, size_t> file_reader::get_block() {
 
 uint64_t file_reader::get_n_bytes(uint8_t n) { // effective n <= 8
     uint64_t res = 0;
-    for (int i = 0; i < n; ++i) {
-        res <<= 8;
-        res += get_symbol();
+    for (uint8_t i = 0; i != n; ++i) {
+        res = (res << 8) | get_symbol();
+        /*res <<= 8;
+        res |= get_symbol();*/
     }
     return res;
 }
 
 uint64_t file_reader::get_n_bytes_r(uint8_t n) {
     uint64_t res = 0;
-    for (int i = 0; i < n; ++i) {
-        res |= static_cast<uint64_t>(get_symbol()) << (8 * i);
+    for (uint8_t i = 0; i != n*8; i+=8) {
+        res |= static_cast<uint64_t>(get_symbol()) << (i);
     }
     return res;
 }
@@ -89,7 +90,7 @@ uint64_t file_reader::get_next_code_piece() {
 }
 
 inline void file_reader::refill_useful_bits() {
-    while (useful_bits <= static_cast<uint8_t>(64 - sizeof(symbol) * 8) && !eof()) {
+    while ((useful_bits <= static_cast<uint8_t>(64 - sizeof(symbol) * 8)) && !eof()) {
         cur_code_piece += static_cast<uint64_t>(get_symbol()) << useful_bits;
         useful_bits += sizeof(symbol) * 8;
 
@@ -97,6 +98,6 @@ inline void file_reader::refill_useful_bits() {
     }
 }
 
-bool file_reader::has_useful_bits() {
+bool file_reader::has_useful_bits() const {
     return useful_bits > 0;
 }

@@ -8,7 +8,6 @@
 
 #include <fstream>
 #include <vector>
-#include "../../lib/h/types_consts.h"
 #include "../../lib/h/code.h"
 
 struct file_writer {
@@ -33,9 +32,9 @@ struct file_writer {
 private:
     std::ofstream out;
     symbol buffer[BUFFER_SIZE];
-    size_t cur_symbol;
+    uint64_t cur_symbol;
     uint64_t cur_part;
-    uint8_t cur_bits;
+    uint8_t cur_bits = 0;
 };
 
 
