@@ -25,7 +25,7 @@ void file_compressor::compress(std::string const &dst) {
 
     for (uint64_t j = 0; j < symbols_in_file; ++j) {
         block = reader.get_block();
-        writer.print_code_block(compressor.compress(block.first, block.second));
+        writer.print_code_block(compressor.compress(block));
     }
 }
 

@@ -23,9 +23,6 @@ void file_writer::set_file(std::string const &dst) {
 }
 
 void file_writer::print(symbol s) {
-    //!!!!!!!!!!
-    //cout << "<print " << static_cast<int>(s) << "> ";
-
     if (cur_symbol == BUFFER_SIZE) {
         out.write(reinterpret_cast<const char *>(buffer), BUFFER_SIZE * sizeof(symbol) / sizeof(char));
         cur_symbol = 0;
@@ -59,10 +56,8 @@ file_writer::~file_writer() {
 }
 
 void file_writer::print_number(int32_t x) {
-    uint8_t shift = 8 * (sizeof(int32_t) - sizeof(symbol));
-    for (uint8_t i = 0; i < sizeof(int32_t) / sizeof(symbol); ++i) {
+    for (int8_t shift = 8 * (sizeof(int32_t) - sizeof(symbol)); shift >= 0; shift -= 8 * sizeof(symbol)) {
         print(static_cast<symbol>(x >> shift));
-        shift -= 8 * sizeof(symbol);
     }
 }
 

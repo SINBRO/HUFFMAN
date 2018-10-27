@@ -111,6 +111,7 @@ symbol code_tree::decode_by_table(uint64_t code_piece) {
 }
 
 symbol code_tree::decode_by_table_only(uint64_t code_piece) {
+    code_pos = cheat_table[static_cast<uint16_t>(code_piece)].second;
     return cheat_table[static_cast<uint16_t>(code_piece)].first;
 }
 
