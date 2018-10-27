@@ -12,7 +12,7 @@ int main(int argc, char *argv[]) {
     src = argv[2];
     dst = argv[3];
     clock_t start, finish;
-    size_t file_size;
+    uint64_t file_size;
 
     if (mode == "-c") {
         std::cerr << "Compressing \"" + src + "\" in \""+ dst + "\" ...\n";

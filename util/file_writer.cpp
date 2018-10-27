@@ -35,7 +35,10 @@ void file_writer::print_code(code const &x) {
     if (cur_bits + x.bits >= 64) {
         print_n_bytes(8, cur_part);
         cur_part = x.value >> static_cast<uint8_t >(64 - cur_bits);
-        cur_bits -= 64 - x.bits;
+        /*if (x.bits >= 64) {
+            throw std::runtime_error("TOOOOO LOOONG CODE");
+        }*/
+        cur_bits -= 64 - x.bits; // x.bits <= 64?
     } else {
         cur_bits += x.bits;
     }
@@ -49,14 +52,14 @@ void file_writer::print_code_block(std::vector<code> const &block) {
 
 file_writer::~file_writer() {
     if (cur_bits != 0) {
-        print_n_bytes(static_cast<uint8_t>((cur_bits + 7) / 8), cur_part);
+        print_n_bytes(8, cur_part); //static_cast<uint8_t>((cur_bits + 7) / 8)
     }
     out.write(reinterpret_cast<const char *>(buffer), cur_symbol * sizeof(symbol) / sizeof(char));
     out.close();
 }
 
 void file_writer::print_number(int32_t x) {
-    for (int8_t shift = 8 * (sizeof(int32_t) - sizeof(symbol)); shift >= 0; shift -= 8 * sizeof(symbol)) {
+    for (int8_t shift = 8 * (4 - sizeof(symbol)); shift >= 0; shift -= 8 * sizeof(symbol)) { //4 -> sizeof(int32_t)
         print(static_cast<symbol>(x >> shift));
     }
 }

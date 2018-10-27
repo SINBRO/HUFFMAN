@@ -409,9 +409,9 @@
 
 #if GTEST_HAS_POSIX_RE
 
-// On some platforms, <regex.h> needs someone to define size_t, and
+// On some platforms, <regex.h> needs someone to define uint64_t, and
 // won't compile otherwise.  We can #include it here as we already
-// included <stdlib.h>, which is guaranteed to define size_t through
+// included <stdlib.h>, which is guaranteed to define uint64_t through
 // <stddef.h>.
 # include <regex.h>  // NOLINT
 

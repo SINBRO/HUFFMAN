@@ -12,9 +12,9 @@ struct data_compressor {
 
     //~data_compressor();
 
-    explicit data_compressor(std::unique_ptr<size_t[]> freq); // SYMBOL_CNT elements
+    explicit data_compressor(std::unique_ptr<uint64_t[]> freq); // SYMBOL_CNT elements
 
-    std::vector<code> compress(std::pair<symbol const *, size_t> const &);
+    std::vector<code> compress(std::pair<symbol const *, uint64_t> const &);
 
     code_tree tree;
 private:

@@ -7215,7 +7215,7 @@ DeathTest::TestRole WindowsDeathTest::AssumeRole() {
       "=" + file_ + "|" + StreamableToString(line_) + "|" +
       StreamableToString(death_test_index) + "|" +
       StreamableToString(static_cast<unsigned int>(::GetCurrentProcessId())) +
-      // size_t has the same width as pointers on both 32-bit and 64-bit
+      // uint64_t has the same width as pointers on both 32-bit and 64-bit
       // Windows platforms.
       // See http://msdn.microsoft.com/en-us/library/tcxf1dw6.aspx.
       "|" + StreamableToString(reinterpret_cast<size_t>(write_handle)) +

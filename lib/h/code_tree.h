@@ -15,7 +15,7 @@ struct code_tree {
 
     code_tree();
 
-    explicit code_tree(std::unique_ptr<size_t[]> &freq); // SYMBOL_CNT elements
+    explicit code_tree(std::unique_ptr<uint64_t[]> &freq); // SYMBOL_CNT elements
 
     explicit code_tree(std::vector<std::pair<int32_t, int32_t>> const &init_data);
 
@@ -44,17 +44,17 @@ struct code_tree {
     struct node {
         uint16_t sym;
         node const *child[2];
-        size_t cnt = 0;
+        uint64_t cnt = 0;
 
         node() : sym(NONE), child{nullptr, nullptr} {};
 
         explicit node(uint16_t s) : sym(s), child{nullptr, nullptr} {};
 
-        node(uint16_t s, size_t count) : sym(s), child{nullptr, nullptr}, cnt(count) {};
+        node(uint16_t s, uint64_t count) : sym(s), child{nullptr, nullptr}, cnt(count) {};
 
         node(node const *ch1, node const *ch2) : sym(NONE), child{ch1, ch2} {};
 
-        node(node const *ch1, node const *ch2, uint16_t s, size_t count) : sym(s), child{ch1, ch2}, cnt(count) {};
+        node(node const *ch1, node const *ch2, uint16_t s, uint64_t count) : sym(s), child{ch1, ch2}, cnt(count) {};
 
         ~node() {
             if (sym == NONE) {
@@ -70,7 +70,7 @@ struct code_tree {
 private:
     int32_t convert_dfs(std::vector<std::pair<int32_t, int32_t>> &v, node const *x);
 
-    node *make_node(std::vector<std::pair<int32_t, int32_t>> const &init_data, size_t i);
+    node *make_node(std::vector<std::pair<int32_t, int32_t>> const &init_data, uint64_t i);
 
     void fill_codes(code codes[SYMBOL_CNT], node const *x, code c);
 

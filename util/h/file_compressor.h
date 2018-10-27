@@ -21,9 +21,9 @@ struct file_compressor {
     static void compress(std::string const & src, std::string const & dst);
 
 private:
-    std::unique_ptr<size_t[]> count_symbols();
+    std::unique_ptr<uint64_t[]> count_symbols();
 
-    size_t symbols_in_file = 0;
+    uint64_t symbols_in_file = 0;
     file_reader reader;
     file_writer writer;
     data_compressor compressor;
