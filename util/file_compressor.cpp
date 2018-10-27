@@ -26,8 +26,8 @@ void file_compressor::compress(std::string const &dst) {
     }                                       // TREE PRINTED
 
     //std::pair<symbol const *, uint64_t> block;
-
-    for (uint64_t j = 0; j < symbols_in_file; ++j) {
+    //for (uint64_t j = 0; j < symbols_in_file; ++j) {
+    while (!reader.eof()) {
         //block = reader.get_block();
         writer.print_code_block(compressor.compress(reader.get_block()));
     }

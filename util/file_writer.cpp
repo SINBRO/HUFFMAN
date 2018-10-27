@@ -58,9 +58,17 @@ file_writer::~file_writer() {
     out.close();
 }
 
-void file_writer::print_number(int32_t x) {
+/*void file_writer::print_number(int32_t x) {
     for (int8_t shift = 8 * (4 - sizeof(symbol)); shift >= 0; shift -= 8 * sizeof(symbol)) { //4 -> sizeof(int32_t)
         print(static_cast<symbol>(x >> shift));
+    }
+}*/
+
+void file_writer::print_number(int32_t x) {
+    uint8_t shift = 8 * (sizeof(int32_t) - sizeof(symbol));
+    for (uint8_t i = 0; i < sizeof(int32_t) / sizeof(symbol); ++i) {
+        print(static_cast<symbol>(x >> shift));
+        shift -= 8 * sizeof(symbol);
     }
 }
 
