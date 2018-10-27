@@ -9,7 +9,6 @@ endif()
 include_directories(${HUFFMAN_LIBRARY_SOURCE_DIR}/h)
 include_directories(${HUFFMAN_UTILITY_SOURCE_DIR}/h)
 
-
 set(HEADERS h/file_reader.h
         h/file_writer.h
         h/file_compressor.h

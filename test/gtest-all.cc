@@ -34,11 +34,11 @@
 // Sometimes it's desirable to build Google Test by compiling a single file.
 // This file serves this purpose.
 
-// This line ensures that gtest.h can be compiled on its own, even
+// This line ensures that test.h can be compiled on its own, even
 // when it's fused.
 #include "gtest.h"
 
-// The following lines pull in the real gtest *.cc files.
+// The following lines pull in the real test *.cc files.
 // Copyright 2005, Google Inc.
 // All rights reserved.
 //
@@ -397,9 +397,9 @@ namespace internal {
 #endif
 
 // Indicates that this translation unit is part of Google Test's
-// implementation.  It must come before gtest-internal-inl.h is
+// implementation.  It must come before test-internal-inl.h is
 // included, or there will be a compiler error.  This trick is to
-// prevent a user from accidentally including gtest-internal-inl.h in
+// prevent a user from accidentally including test-internal-inl.h in
 // his code.
 #define GTEST_IMPLEMENTATION_ 1
 // Copyright 2005, Google Inc.
@@ -445,7 +445,7 @@ namespace internal {
 // part of Google Test's implementation; otherwise it's undefined.
 #if !GTEST_IMPLEMENTATION_
 // A user is trying to include this from his code - just say no.
-# error "gtest-internal-inl.h is part of Google Test's internal implementation."
+# error "test-internal-inl.h is part of Google Test's internal implementation."
 # error "It must not be included except by Google Test itself."
 #endif  // GTEST_IMPLEMENTATION_
 
@@ -476,8 +476,8 @@ namespace testing {
 // Declares the flags.
 //
 // We don't want the users to modify this flag in the code, but want
-// Google Test's own unit tests to be able to access it. Therefore we
-// declare it here as opposed to in gtest.h.
+// Google Test's own unit test to be able to access it. Therefore we
+// declare it here as opposed to in test.h.
     GTEST_DECLARE_bool_(death_test_use_fork);
 
     namespace internal {
@@ -658,7 +658,7 @@ namespace testing {
 // but inconsistent (e.g., shard_index >= total_shards), prints
 // an error and exits. If in_subprocess_for_death_test, sharding is
 // disabled because it must only be applied to the original test
-// process. Otherwise, we could filter out death tests we intended to execute.
+// process. Otherwise, we could filter out death test we intended to execute.
         GTEST_API_ bool ShouldShard(const char* total_shards_str,
                                     const char* shard_index_str,
                                     bool in_subprocess_for_death_test);
@@ -763,7 +763,7 @@ namespace testing {
 // Class UnitTestOptions.
 //
 // This class contains functions for processing options the user
-// specifies when running the tests.  It has only static members.
+// specifies when running the test.  It has only static members.
 //
 // In most cases, the user can specify an option using either an
 // environment variable or a command line flag.  E.g. you can set the
@@ -945,25 +945,25 @@ namespace testing {
                 // that should run.
                 int test_case_to_run_count() const;
 
-                // Gets the number of successful tests.
+                // Gets the number of successful test.
                 int successful_test_count() const;
 
-                // Gets the number of failed tests.
+                // Gets the number of failed test.
                 int failed_test_count() const;
 
-                // Gets the number of disabled tests that will be reported in the XML report.
+                // Gets the number of disabled test that will be reported in the XML report.
                 int reportable_disabled_test_count() const;
 
-                // Gets the number of disabled tests.
+                // Gets the number of disabled test.
                 int disabled_test_count() const;
 
-                // Gets the number of tests to be printed in the XML report.
+                // Gets the number of test to be printed in the XML report.
                 int reportable_test_count() const;
 
-                // Gets the number of all tests.
+                // Gets the number of all test.
                 int total_test_count() const;
 
-                // Gets the number of tests that should run.
+                // Gets the number of test that should run.
                 int test_to_run_count() const;
 
                 // Gets the time of the test program start, in ms from the start of the
@@ -977,7 +977,7 @@ namespace testing {
                 bool Passed() const { return !Failed(); }
 
                 // Returns true iff the unit test failed (i.e. some test case failed
-                // or something outside of all tests failed).
+                // or something outside of all test failed).
                 bool Failed() const {
                     return failed_test_case_count() > 0 || ad_hoc_test_result()->Failed();
                 }
@@ -1055,7 +1055,7 @@ namespace testing {
                 void AddTestInfo(Test::SetUpTestCaseFunc set_up_tc,
                 Test::TearDownTestCaseFunc tear_down_tc,
                 TestInfo* test_info) {
-                    // In order to support thread-safe death tests, we need to
+                    // In order to support thread-safe death test, we need to
                     // remember the original working directory when the test program
                     // was first invoked.  We cannot do this in RUN_ALL_TESTS(), as
                     // the user may have changed the current directory before calling
@@ -1076,7 +1076,7 @@ namespace testing {
 
 #if GTEST_HAS_PARAM_TEST
                 // Returns ParameterizedTestCaseRegistry object used to keep track of
-  // value-parameterized tests and instantiate and register them.
+  // value-parameterized test and instantiate and register them.
   internal::ParameterizedTestCaseRegistry& parameterized_test_registry() {
     return parameterized_test_registry_;
   }
@@ -1094,21 +1094,21 @@ namespace testing {
                     current_test_info_ = a_current_test_info;
                 }
 
-                // Registers all parameterized tests defined using TEST_P and
-                // INSTANTIATE_TEST_CASE_P, creating regular tests for each test/parameter
+                // Registers all parameterized test defined using TEST_P and
+                // INSTANTIATE_TEST_CASE_P, creating regular test for each test/parameter
                 // combination. This method can be called more then once; it has guards
-                // protecting from registering the tests more then once.  If
-                // value-parameterized tests are disabled, RegisterParameterizedTests is
+                // protecting from registering the test more then once.  If
+                // value-parameterized test are disabled, RegisterParameterizedTests is
                 // present but does nothing.
                 void RegisterParameterizedTests();
 
-                // Runs all tests in this UnitTest object, prints the result, and
-                // returns true if all tests are successful.  If any exception is
+                // Runs all test in this UnitTest object, prints the result, and
+                // returns true if all test are successful.  If any exception is
                 // thrown during a test, this test is considered to be failed, but
-                // the rest of the tests will still be run.
+                // the rest of the test will still be run.
                 bool RunAllTests();
 
-                // Clears the results of all tests, except the ad hoc tests.
+                // Clears the results of all test, except the ad hoc test.
                 void ClearNonAdHocTestResult() {
                     ForEach(test_cases_, TestCase::ClearTestCaseResult);
                 }
@@ -1132,12 +1132,12 @@ namespace testing {
                 // Matches the full name of each test against the user-specified
                 // filter to decide whether the test should run, then records the
                 // result in each TestCase and TestInfo object.
-                // If shard_tests == HONOR_SHARDING_PROTOCOL, further filters tests
+                // If shard_tests == HONOR_SHARDING_PROTOCOL, further filters test
                 // based on sharding variables in the environment.
-                // Returns the number of tests that should run.
+                // Returns the number of test that should run.
                 int FilterTests(ReactionToSharding shard_tests);
 
-                // Prints the names of the tests matching the user-specified filter flag.
+                // Prints the names of the test matching the user-specified filter flag.
                 void ListTestsMatchingFilter();
 
                 const TestCase* current_test_case() const { return current_test_case_; }
@@ -1145,7 +1145,7 @@ namespace testing {
                 const TestInfo* current_test_info() const { return current_test_info_; }
 
                 // Returns the vector of environments that need to be set-up/torn-down
-                // before/after the tests are run.
+                // before/after the test are run.
                 std::vector<Environment*>& environments() { return environments_; }
 
                 // Getters for the per-thread Google Test trace stack.
@@ -1201,11 +1201,11 @@ namespace testing {
                 // Gets the random number generator.
                 internal::Random* random() { return &random_; }
 
-                // Shuffles all test cases, and the tests within each test case,
-                // making sure that death tests are still run first.
+                // Shuffles all test cases, and the test within each test case,
+                // making sure that death test are still run first.
                 void ShuffleTests();
 
-                // Restores the test cases and tests to their order before the first shuffle.
+                // Restores the test cases and test to their order before the first shuffle.
                 void UnshuffleTests();
 
                 // Returns the value of GTEST_FLAG(catch_exceptions) at the moment
@@ -1242,7 +1242,7 @@ namespace testing {
                 per_thread_test_part_result_reporter_;
 
                 // The vector of environments that need to be set-up/torn-down
-                // before/after the tests are run.
+                // before/after the test are run.
                 std::vector<Environment*> environments_;
 
                 // The vector of TestCases in their original order.  It owns the
@@ -1257,7 +1257,7 @@ namespace testing {
 
 #if GTEST_HAS_PARAM_TEST
                 // ParameterizedTestRegistry object used to register value-parameterized
-  // tests.
+  // test.
   internal::ParameterizedTestCaseRegistry parameterized_test_registry_;
 
   // Indicates whether RegisterParameterizedTests() has been called already.
@@ -1442,11 +1442,11 @@ bool ParseNaturalNumber(const ::std::string& str, Integer* number) {
 #endif  // GTEST_HAS_DEATH_TEST
 
 // TestResult contains some private methods that should be hidden from
-// Google Test user but are required for testing. This class allow our tests
+// Google Test user but are required for testing. This class allow our test
 // to access them.
 //
 // This class is supplied only for the purpose of testing Google Test's own
-// constructs. Do not use it in user tests, either directly or indirectly.
+// constructs. Do not use it in user test, either directly or indirectly.
         class TestResultAccessor {
         public:
             static void RecordProperty(TestResult* test_result,
@@ -1673,7 +1673,7 @@ namespace testing {
     GTEST_DEFINE_bool_(
             also_run_disabled_tests,
             internal::BoolFromGTestEnv("also_run_disabled_tests", false),
-    "Run disabled tests too, in addition to the tests normally being run.");
+    "Run disabled test too, in addition to the test normally being run.");
 
     GTEST_DEFINE_bool_(
             break_on_failure,
@@ -1698,13 +1698,13 @@ namespace testing {
             filter,
             internal::StringFromGTestEnv("filter", GetDefaultFilter()),
     "A colon-separated list of glob (not regex) patterns "
-    "for filtering the tests to run, optionally followed by a "
-    "'-' and a : separated list of negative patterns (tests to "
+    "for filtering the test to run, optionally followed by a "
+    "'-' and a : separated list of negative patterns (test to "
     "exclude).  A test is run if it matches one of the positive "
     "patterns and does not match any of the negative patterns.");
 
     GTEST_DEFINE_bool_(list_tests, false,
-    "List all tests without running them.");
+    "List all test without running them.");
 
     GTEST_DEFINE_string_(
             output,
@@ -1734,7 +1734,7 @@ namespace testing {
             repeat,
             internal::Int32FromGTestEnv("repeat", 1),
     "How many times to repeat each test.  Specify a negative number "
-    "for repeating forever.  Useful for shaking out flaky tests.");
+    "for repeating forever.  Useful for shaking out flaky test.");
 
     GTEST_DEFINE_bool_(
             show_internal_stack_frames, false,
@@ -1745,7 +1745,7 @@ namespace testing {
             shuffle,
             internal::BoolFromGTestEnv("shuffle", false),
     "True iff " GTEST_NAME_
-    " should randomize tests' order on every run.");
+    " should randomize test' order on every run.");
 
     GTEST_DEFINE_int32_(
             stack_trace_depth,
@@ -2078,7 +2078,7 @@ namespace internal {
 // on whether the call is from the Google Test framework itself or
 // from user test code.  GetTestTypeId() is guaranteed to always
 // return the same value, as it always calls GetTypeId<>() from the
-// gtest.cc, which is within the Google Test framework.
+// test.cc, which is within the Google Test framework.
     TypeId GetTestTypeId() {
         return GetTypeId<Test>();
     }
@@ -2209,38 +2209,38 @@ namespace internal {
         return CountIf(test_cases_, ShouldRunTestCase);
     }
 
-// Gets the number of successful tests.
+// Gets the number of successful test.
     int UnitTestImpl::successful_test_count() const {
         return SumOverTestCaseList(test_cases_, &TestCase::successful_test_count);
     }
 
-// Gets the number of failed tests.
+// Gets the number of failed test.
     int UnitTestImpl::failed_test_count() const {
         return SumOverTestCaseList(test_cases_, &TestCase::failed_test_count);
     }
 
-// Gets the number of disabled tests that will be reported in the XML report.
+// Gets the number of disabled test that will be reported in the XML report.
     int UnitTestImpl::reportable_disabled_test_count() const {
         return SumOverTestCaseList(test_cases_,
                                    &TestCase::reportable_disabled_test_count);
     }
 
-// Gets the number of disabled tests.
+// Gets the number of disabled test.
     int UnitTestImpl::disabled_test_count() const {
         return SumOverTestCaseList(test_cases_, &TestCase::disabled_test_count);
     }
 
-// Gets the number of tests to be printed in the XML report.
+// Gets the number of test to be printed in the XML report.
     int UnitTestImpl::reportable_test_count() const {
         return SumOverTestCaseList(test_cases_, &TestCase::reportable_test_count);
     }
 
-// Gets the number of all tests.
+// Gets the number of all test.
     int UnitTestImpl::total_test_count() const {
         return SumOverTestCaseList(test_cases_, &TestCase::total_test_count);
     }
 
-// Gets the number of tests that should run.
+// Gets the number of test that should run.
     int UnitTestImpl::test_to_run_count() const {
         return SumOverTestCaseList(test_cases_, &TestCase::test_to_run_count);
     }
@@ -3239,7 +3239,7 @@ static const char* const kReservedTestSuitesAttributes[] = {
         "failures",
         "name",
         "random_seed",
-        "tests",
+        "test",
         "time",
         "timestamp"
 };
@@ -3251,7 +3251,7 @@ static const char* const kReservedTestSuiteAttributes[] = {
         "errors",
         "failures",
         "name",
-        "tests",
+        "test",
         "time"
 };
 
@@ -3421,7 +3421,7 @@ namespace internal {
 
 }  // namespace internal
 
-// Google Test requires all tests in the same test case to use the same test
+// Google Test requires all test in the same test case to use the same test
 // fixture class.  This function checks if the current test has the
 // same fixture class as the first test in the current test case.  If
 // yes, it returns true; otherwise it generates a Google Test failure and
@@ -3452,14 +3452,14 @@ bool Test::HasSameFixtureClass() {
 
             // Gets the name of the TEST and the name of the TEST_F.  Note
             // that first_is_TEST and this_is_TEST cannot both be true, as
-            // the fixture IDs are different for the two tests.
+            // the fixture IDs are different for the two test.
             const char* const TEST_name =
                     first_is_TEST ? first_test_name : this_test_name;
             const char* const TEST_F_name =
                     first_is_TEST ? this_test_name : first_test_name;
 
             ADD_FAILURE()
-                    << "All tests in the same test case must use the same test fixture\n"
+                    << "All test in the same test case must use the same test fixture\n"
                     << "class, so mixing TEST_F and TEST in the same test case is\n"
                     << "illegal.  In test case " << this_test_info->test_case_name()
                     << ",\n"
@@ -3471,7 +3471,7 @@ bool Test::HasSameFixtureClass() {
             // The user defined two fixture classes with the same name in
             // two namespaces - we'll tell him/her how to fix it.
             ADD_FAILURE()
-                    << "All tests in the same test case must use the same test fixture\n"
+                    << "All test in the same test case must use the same test fixture\n"
                     << "class.  However, in test case "
                     << this_test_info->test_case_name() << ",\n"
                     << "you defined test " << first_test_name
@@ -3479,7 +3479,7 @@ bool Test::HasSameFixtureClass() {
                     << "using two different test fixture classes.  This can happen if\n"
                     << "the two classes are from different namespaces or translation\n"
                     << "units and have the same name.  You should probably rename one\n"
-                    << "of the classes to put the tests into different test cases.";
+                    << "of the classes to put the test into different test cases.";
         }
         return false;
     }
@@ -3719,12 +3719,12 @@ namespace internal {
   Message errors;
   errors
       << "Attempted redefinition of test case " << test_case_name << ".\n"
-      << "All tests in the same test case must use the same test fixture\n"
+      << "All test in the same test case must use the same test fixture\n"
       << "class.  However, in test case " << test_case_name << ", you tried\n"
       << "to define a test using a fixture class different from the one\n"
       << "used earlier. This can happen if the two fixture classes are\n"
       << "from different namespaces and have the same name. You should\n"
-      << "probably rename one of the classes to put the tests into different\n"
+      << "probably rename one of the classes to put the test into different\n"
       << "test cases.";
 
   fprintf(stderr, "%s %s", FormatFileLocation(file, line).c_str(),
@@ -3765,8 +3765,8 @@ namespace {
 
 namespace internal {
 
-// This method expands all parameterized tests registered with macros TEST_P
-// and INSTANTIATE_TEST_CASE_P into regular tests and registers those.
+// This method expands all parameterized test registered with macros TEST_P
+// and INSTANTIATE_TEST_CASE_P into regular test and registers those.
 // This will be done just once during the program runtime.
     void UnitTestImpl::RegisterParameterizedTests() {
 #if GTEST_HAS_PARAM_TEST
@@ -3827,37 +3827,37 @@ void TestInfo::Run() {
 
 // class TestCase
 
-// Gets the number of successful tests in this test case.
+// Gets the number of successful test in this test case.
 int TestCase::successful_test_count() const {
     return CountIf(test_info_list_, TestPassed);
 }
 
-// Gets the number of failed tests in this test case.
+// Gets the number of failed test in this test case.
 int TestCase::failed_test_count() const {
     return CountIf(test_info_list_, TestFailed);
 }
 
-// Gets the number of disabled tests that will be reported in the XML report.
+// Gets the number of disabled test that will be reported in the XML report.
 int TestCase::reportable_disabled_test_count() const {
     return CountIf(test_info_list_, TestReportableDisabled);
 }
 
-// Gets the number of disabled tests in this test case.
+// Gets the number of disabled test in this test case.
 int TestCase::disabled_test_count() const {
     return CountIf(test_info_list_, TestDisabled);
 }
 
-// Gets the number of tests to be printed in the XML report.
+// Gets the number of test to be printed in the XML report.
 int TestCase::reportable_test_count() const {
     return CountIf(test_info_list_, TestReportable);
 }
 
-// Get the number of tests in this test case that should run.
+// Get the number of test in this test case that should run.
 int TestCase::test_to_run_count() const {
     return CountIf(test_info_list_, ShouldRunTest);
 }
 
-// Gets the number of all tests.
+// Gets the number of all test.
 int TestCase::total_test_count() const {
     return static_cast<int>(test_info_list_.size());
 }
@@ -3888,14 +3888,14 @@ TestCase::~TestCase() {
     ForEach(test_info_list_, internal::Delete<TestInfo>);
 }
 
-// Returns the i-th test among all the tests. i can range from 0 to
+// Returns the i-th test among all the test. i can range from 0 to
 // total_test_count() - 1. If i is not in that range, returns NULL.
 const TestInfo* TestCase::GetTestInfo(int i) const {
     const int index = GetElementOr(test_indices_, i, -1);
     return index < 0 ? NULL : test_info_list_[index];
 }
 
-// Returns the i-th test among all the tests. i can range from 0 to
+// Returns the i-th test among all the test. i can range from 0 to
 // total_test_count() - 1. If i is not in that range, returns NULL.
 TestInfo* TestCase::GetMutableTestInfo(int i) {
     const int index = GetElementOr(test_indices_, i, -1);
@@ -3937,13 +3937,13 @@ void TestCase::Run() {
     impl->set_current_test_case(NULL);
 }
 
-// Clears the results of all tests in this test case.
+// Clears the results of all test in this test case.
 void TestCase::ClearResult() {
     ad_hoc_test_result_.Clear();
     ForEach(test_info_list_, TestInfo::ClearTestResult);
 }
 
-// Shuffles the tests in this test case.
+// Shuffles the test in this test case.
 void TestCase::ShuffleTests(internal::Random* random) {
     Shuffle(random, &test_indices_);
 }
@@ -3967,9 +3967,9 @@ static std::string FormatCountableNoun(int count,
            (count == 1 ? singular_form : plural_form);
 }
 
-// Formats the count of tests.
+// Formats the count of test.
 static std::string FormatTestCount(int test_count) {
-    return FormatCountableNoun(test_count, "test", "tests");
+    return FormatCountableNoun(test_count, "test", "test");
 }
 
 // Formats the count of test cases.
@@ -4199,16 +4199,16 @@ WORD GetColorAttribute(GTestColor color) {
         static void PrintFailedTests(const UnitTest& unit_test);
     };
 
-    // Fired before each iteration of tests starts.
+    // Fired before each iteration of test starts.
     void PrettyUnitTestResultPrinter::OnTestIterationStart(
             const UnitTest& unit_test, int iteration) {
         if (GTEST_FLAG(repeat) != 1)
-            printf("\nRepeating all tests (iteration %d) . . .\n\n", iteration + 1);
+            printf("\nRepeating all test (iteration %d) . . .\n\n", iteration + 1);
 
         const char* const filter = GTEST_FLAG(filter).c_str();
 
         // Prints the filter if it's not *.  This reminds the user that some
-        // tests may be skipped.
+        // test may be skipped.
         if (!String::CStringEquals(filter, kUniversalFilter)) {
             ColoredPrintf(COLOR_YELLOW,
                           "Note: %s filter = %s\n", GTEST_NAME_, filter);
@@ -4224,7 +4224,7 @@ WORD GetColorAttribute(GTestColor color) {
 
         if (GTEST_FLAG(shuffle)) {
             ColoredPrintf(COLOR_YELLOW,
-                          "Note: Randomizing tests' orders with a seed of %d .\n",
+                          "Note: Randomizing test' orders with a seed of %d .\n",
                           unit_test.random_seed());
         }
 
@@ -4244,7 +4244,7 @@ WORD GetColorAttribute(GTestColor color) {
 
     void PrettyUnitTestResultPrinter::OnTestCaseStart(const TestCase& test_case) {
         const std::string counts =
-                FormatCountableNoun(test_case.test_to_run_count(), "test", "tests");
+                FormatCountableNoun(test_case.test_to_run_count(), "test", "test");
         ColoredPrintf(COLOR_GREEN, "[----------] ");
         printf("%s from %s", counts.c_str(), test_case.name());
         if (test_case.type_param() == NULL) {
@@ -4297,7 +4297,7 @@ WORD GetColorAttribute(GTestColor color) {
         if (!GTEST_FLAG(print_time)) return;
 
         const std::string counts =
-                FormatCountableNoun(test_case.test_to_run_count(), "test", "tests");
+                FormatCountableNoun(test_case.test_to_run_count(), "test", "test");
         ColoredPrintf(COLOR_GREEN, "[----------] ");
         printf("%s from %s (%s ms total)\n\n",
                counts.c_str(), test_case.name(),
@@ -4312,7 +4312,7 @@ WORD GetColorAttribute(GTestColor color) {
         fflush(stdout);
     }
 
-// Internal helper for printing the list of failed tests.
+// Internal helper for printing the list of failed test.
     void PrettyUnitTestResultPrinter::PrintFailedTests(const UnitTest& unit_test) {
         const int failed_test_count = unit_test.failed_test_count();
         if (failed_test_count == 0) {
@@ -4819,7 +4819,7 @@ void TestEventRepeater::Name(const Type& parameter) { \
         const std::string kTestsuite = "testsuite";
         *stream << "  <" << kTestsuite;
         OutputXmlAttribute(stream, kTestsuite, "name", test_case.name());
-        OutputXmlAttribute(stream, kTestsuite, "tests",
+        OutputXmlAttribute(stream, kTestsuite, "test",
                            StreamableToString(test_case.reportable_test_count()));
         OutputXmlAttribute(stream, kTestsuite, "failures",
                            StreamableToString(test_case.failed_test_count()));
@@ -4847,7 +4847,7 @@ void TestEventRepeater::Name(const Type& parameter) { \
         *stream << "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
         *stream << "<" << kTestsuites;
 
-        OutputXmlAttribute(stream, kTestsuites, "tests",
+        OutputXmlAttribute(stream, kTestsuites, "test",
                            StreamableToString(unit_test.reportable_test_count()));
         OutputXmlAttribute(stream, kTestsuites, "failures",
                            StreamableToString(unit_test.failed_test_count()));
@@ -5125,7 +5125,7 @@ void TestEventListeners::SuppressEventForwarding() {
 UnitTest* UnitTest::GetInstance() {
     // When compiled with MSVC 7.1 in optimized mode, destroying the
     // UnitTest object upon exiting the program messes up the exit code,
-    // causing successful tests to appear failed.  We have to use a
+    // causing successful test to appear failed.  We have to use a
     // different implementation in this case to bypass the compiler bug.
     // This implementation makes the compiler happy, at the cost of
     // leaking the UnitTest object.
@@ -5164,33 +5164,33 @@ int UnitTest::test_case_to_run_count() const {
     return impl()->test_case_to_run_count();
 }
 
-// Gets the number of successful tests.
+// Gets the number of successful test.
 int UnitTest::successful_test_count() const {
     return impl()->successful_test_count();
 }
 
-// Gets the number of failed tests.
+// Gets the number of failed test.
 int UnitTest::failed_test_count() const { return impl()->failed_test_count(); }
 
-// Gets the number of disabled tests that will be reported in the XML report.
+// Gets the number of disabled test that will be reported in the XML report.
 int UnitTest::reportable_disabled_test_count() const {
     return impl()->reportable_disabled_test_count();
 }
 
-// Gets the number of disabled tests.
+// Gets the number of disabled test.
 int UnitTest::disabled_test_count() const {
     return impl()->disabled_test_count();
 }
 
-// Gets the number of tests to be printed in the XML report.
+// Gets the number of test to be printed in the XML report.
 int UnitTest::reportable_test_count() const {
     return impl()->reportable_test_count();
 }
 
-// Gets the number of all tests.
+// Gets the number of all test.
 int UnitTest::total_test_count() const { return impl()->total_test_count(); }
 
-// Gets the number of tests that should run.
+// Gets the number of test that should run.
 int UnitTest::test_to_run_count() const { return impl()->test_to_run_count(); }
 
 // Gets the time of the test program start, in ms from the start of the
@@ -5208,7 +5208,7 @@ internal::TimeInMillis UnitTest::elapsed_time() const {
 bool UnitTest::Passed() const { return impl()->Passed(); }
 
 // Returns true iff the unit test failed (i.e. some test case failed
-// or something outside of all tests failed).
+// or something outside of all test failed).
 bool UnitTest::Failed() const { return impl()->Failed(); }
 
 // Gets the i-th test case among all the test cases. i can range from 0 to
@@ -5237,7 +5237,7 @@ TestEventListeners& UnitTest::listeners() {
 
 // Registers and returns a global test environment.  When a test
 // program is run, all global test environments will be set-up in the
-// order they were registered.  After all tests in the program have
+// order they were registered.  After all test in the program have
 // finished, all global test environments will be torn-down in the
 // *reverse* order they were registered.
 //
@@ -5297,7 +5297,7 @@ void UnitTest::AddTestPartResult(
             // command line for debugging.
             if (GTEST_FLAG(break_on_failure)) {
 #if GTEST_OS_WINDOWS
-                // Using DebugBreak on Windows allows gtest to still break into a debugger
+                // Using DebugBreak on Windows allows test to still break into a debugger
       // when a failure happens and both the --gtest_break_on_failure and
       // the --gtest_catch_exceptions flags are specified.
       DebugBreak();
@@ -5330,7 +5330,7 @@ void UnitTest::RecordProperty(const std::string& key,
     impl_->RecordProperty(TestProperty(key, value));
 }
 
-// Runs all tests in this UnitTest object and prints the result.
+// Runs all test in this UnitTest object and prints the result.
 // Returns 0 if successful, or 1 otherwise.
 //
 // We don't protect this under mutex_, as we only support calling it
@@ -5370,7 +5370,7 @@ int UnitTest::Run() {
 
 #if GTEST_HAS_SEH
     // Either the user wants Google Test to catch exceptions thrown by the
-  // tests or this is executing in the context of death test child
+  // test or this is executing in the context of death test child
   // process. In either case the user does not want to see pop-up dialogs
   // about crashes - they are expected.
   if (impl()->catch_exceptions() || in_death_test_child_process) {
@@ -5440,7 +5440,7 @@ int UnitTest::random_seed() const { return impl_->random_seed(); }
 
 #if GTEST_HAS_PARAM_TEST
 // Returns ParameterizedTestCaseRegistry object used to keep track of
-// value-parameterized tests and instantiate and register them.
+// value-parameterized test and instantiate and register them.
 internal::ParameterizedTestCaseRegistry&
     UnitTest::parameterized_test_registry()
         GTEST_LOCK_EXCLUDED_(mutex_) {
@@ -5603,7 +5603,7 @@ void UnitTestImpl::ConfigureStreamingOutput() {
     SuppressTestEventsIfInSubprocess();
 #endif  // GTEST_HAS_DEATH_TEST
 
-            // Registers parameterized tests. This makes parameterized tests
+            // Registers parameterized test. This makes parameterized test
             // available to the UnitTest reflection API without running
             // RUN_ALL_TESTS.
             RegisterParameterizedTests();
@@ -5694,15 +5694,15 @@ void UnitTestImpl::ConfigureStreamingOutput() {
     static void SetUpEnvironment(Environment* env) { env->SetUp(); }
     static void TearDownEnvironment(Environment* env) { env->TearDown(); }
 
-// Runs all tests in this UnitTest object, prints the result, and
-// returns true if all tests are successful.  If any exception is
+// Runs all test in this UnitTest object, prints the result, and
+// returns true if all test are successful.  If any exception is
 // thrown during a test, the test is considered to be failed, but the
-// rest of the tests will still be run.
+// rest of the test will still be run.
 //
-// When parameterized tests are enabled, it expands and registers
-// parameterized tests first in RegisterParameterizedTests().
+// When parameterized test are enabled, it expands and registers
+// parameterized test first in RegisterParameterizedTests().
 // All other functions called from RunAllTests() may safely assume that
-// parameterized tests are ready to be counted and run.
+// parameterized test are ready to be counted and run.
     bool UnitTestImpl::RunAllTests() {
         // Makes sure InitGoogleTest() was called.
         if (!GTestIsInitialized()) {
@@ -5737,12 +5737,12 @@ void UnitTestImpl::ConfigureStreamingOutput() {
                                               in_subprocess_for_death_test);
 
         // Compares the full test names with the filter to decide which
-        // tests to run.
+        // test to run.
         const bool has_tests_to_run = FilterTests(should_shard
                                                   ? HONOR_SHARDING_PROTOCOL
                                                   : IGNORE_SHARDING_PROTOCOL) > 0;
 
-        // Lists the tests and exits if the --gtest_list_tests flag was specified.
+        // Lists the test and exits if the --gtest_list_tests flag was specified.
         if (GTEST_FLAG(list_tests)) {
             // This must be called *after* FilterTests() has been called.
             ListTestsMatchingFilter();
@@ -5760,7 +5760,7 @@ void UnitTestImpl::ConfigureStreamingOutput() {
         start_timestamp_ = GetTimeInMillis();
         repeater->OnTestProgramStart(*parent_);
 
-        // How many times to repeat the tests?  We don't want to repeat them
+        // How many times to repeat the test?  We don't want to repeat them
         // when we are inside the subprocess of a death test.
         const int repeat = in_subprocess_for_death_test ? 1 : GTEST_FLAG(repeat);
         // Repeats forever if the repeat count is negative.
@@ -5772,7 +5772,7 @@ void UnitTestImpl::ConfigureStreamingOutput() {
 
             const TimeInMillis start = GetTimeInMillis();
 
-            // Shuffles test cases and tests if requested.
+            // Shuffles test cases and test if requested.
             if (has_tests_to_run && GTEST_FLAG(shuffle)) {
                 random()->Reseed(random_seed_);
                 // This should be done before calling OnTestIterationStart(),
@@ -5781,7 +5781,7 @@ void UnitTestImpl::ConfigureStreamingOutput() {
                 ShuffleTests();
             }
 
-            // Tells the unit test event listeners that the tests are about to start.
+            // Tells the unit test event listeners that the test are about to start.
             repeater->OnTestIterationStart(*parent_, i);
 
             // Runs each test case if there is at least one test to run.
@@ -5791,7 +5791,7 @@ void UnitTestImpl::ConfigureStreamingOutput() {
                 ForEach(environments_, SetUpEnvironment);
                 repeater->OnEnvironmentsSetUpEnd(*parent_);
 
-                // Runs the tests only if there was no fatal failure during global
+                // Runs the test only if there was no fatal failure during global
                 // set-up.
                 if (!Test::HasFatalFailure()) {
                     for (int test_index = 0; test_index < total_test_case_count();
@@ -5809,7 +5809,7 @@ void UnitTestImpl::ConfigureStreamingOutput() {
 
             elapsed_time_ = GetTimeInMillis() - start;
 
-            // Tells the unit test event listener that the tests have just finished.
+            // Tells the unit test event listener that the test have just finished.
             repeater->OnTestIterationEnd(*parent_, i);
 
             // Gets the result and clears it.
@@ -5822,7 +5822,7 @@ void UnitTestImpl::ConfigureStreamingOutput() {
             // N-th iteration without repeating the first (N - 1) iterations.
             // This is not enclosed in "if (GTEST_FLAG(shuffle)) { ... }", in
             // case the user somehow changes the value of the flag somewhere
-            // (it's always safe to unshuffle the tests).
+            // (it's always safe to unshuffle the test).
             UnshuffleTests();
 
             if (GTEST_FLAG(shuffle)) {
@@ -5861,7 +5861,7 @@ void UnitTestImpl::ConfigureStreamingOutput() {
 // but inconsistent (i.e., shard_index >= total_shards), prints
 // an error and exits. If in_subprocess_for_death_test, sharding is
 // disabled because it must only be applied to the original test
-// process. Otherwise, we could filter out death tests we intended to execute.
+// process. Otherwise, we could filter out death test we intended to execute.
     bool ShouldShard(const char* total_shards_env,
                      const char* shard_index_env,
                      bool in_subprocess_for_death_test) {
@@ -5932,19 +5932,19 @@ void UnitTestImpl::ConfigureStreamingOutput() {
 // Compares the name of each test with the user-specified filter to
 // decide whether the test should be run, then records the result in
 // each TestCase and TestInfo object.
-// If shard_tests == true, further filters tests based on sharding
+// If shard_tests == true, further filters test based on sharding
 // variables in the environment - see
 // http://code.google.com/p/googletest/wiki/GoogleTestAdvancedGuide.
-// Returns the number of tests that should run.
+// Returns the number of test that should run.
     int UnitTestImpl::FilterTests(ReactionToSharding shard_tests) {
         const Int32 total_shards = shard_tests == HONOR_SHARDING_PROTOCOL ?
                                    Int32FromEnvOrDie(kTestTotalShards, -1) : -1;
         const Int32 shard_index = shard_tests == HONOR_SHARDING_PROTOCOL ?
                                   Int32FromEnvOrDie(kTestShardIndex, -1) : -1;
 
-        // num_runnable_tests are the number of tests that will
+        // num_runnable_tests are the number of test that will
         // run across all shards (i.e., match filter and are not disabled).
-        // num_selected_tests are the number of tests to be run on
+        // num_selected_tests are the number of test to be run on
         // this shard.
         int num_runnable_tests = 0;
         int num_selected_tests = 0;
@@ -6011,7 +6011,7 @@ void UnitTestImpl::ConfigureStreamingOutput() {
         }
     }
 
-// Prints the names of the tests matching the user-specified filter flag.
+// Prints the names of the test matching the user-specified filter flag.
     void UnitTestImpl::ListTestsMatchingFilter() {
         // Print at most this many characters for each type/value parameter.
         const int kMaxParamLength = 250;
@@ -6080,8 +6080,8 @@ void UnitTestImpl::ConfigureStreamingOutput() {
                &(current_test_info_->result_) : &ad_hoc_test_result_;
     }
 
-// Shuffles all test cases, and the tests within each test case,
-// making sure that death tests are still run first.
+// Shuffles all test cases, and the test within each test case,
+// making sure that death test are still run first.
     void UnitTestImpl::ShuffleTests() {
         // Shuffles the death test cases.
         ShuffleRange(random(), 0, last_death_test_case_ + 1, &test_case_indices_);
@@ -6090,16 +6090,16 @@ void UnitTestImpl::ConfigureStreamingOutput() {
         ShuffleRange(random(), last_death_test_case_ + 1,
                      static_cast<int>(test_cases_.size()), &test_case_indices_);
 
-        // Shuffles the tests inside each test case.
+        // Shuffles the test inside each test case.
         for (size_t i = 0; i < test_cases_.size(); i++) {
             test_cases_[i]->ShuffleTests(random());
         }
     }
 
-// Restores the test cases and tests to their order before the first shuffle.
+// Restores the test cases and test to their order before the first shuffle.
     void UnitTestImpl::UnshuffleTests() {
         for (size_t i = 0; i < test_cases_.size(); i++) {
-            // Unshuffles the tests in each test case.
+            // Unshuffles the test in each test case.
             test_cases_[i]->UnshuffleTests();
             // Resets the index of each test case.
             test_case_indices_[i] = static_cast<int>(i);
@@ -6266,7 +6266,7 @@ static bool HasGoogleTestFlagPrefix(const char* str) {
 //   @Y    changes the color to yellow.
 //   @D    changes to the default terminal text color.
 //
-// TODO(wan@google.com): Write tests for this once we add stdout
+// TODO(wan@google.com): Write test for this once we add stdout
 // capturing to Google Test.
 static void PrintColorEncoded(const char* str) {
     GTestColor color = COLOR_DEFAULT;  // The current color.
@@ -6303,26 +6303,26 @@ static void PrintColorEncoded(const char* str) {
 }
 
 static const char kColorEncodedHelpMessage[] =
-        "This program contains tests written using " GTEST_NAME_ ". You can use the\n"
+        "This program contains test written using " GTEST_NAME_ ". You can use the\n"
 "following command line flags to control its behavior:\n"
 "\n"
 "Test Selection:\n"
 "  @G--" GTEST_FLAG_PREFIX_ "list_tests@D\n"
-"      List the names of all tests instead of running them. The name of\n"
+"      List the names of all test instead of running them. The name of\n"
 "      TEST(Foo, Bar) is \"Foo.Bar\".\n"
 "  @G--" GTEST_FLAG_PREFIX_ "filter=@YPOSTIVE_PATTERNS"
 "[@G-@YNEGATIVE_PATTERNS]@D\n"
-"      Run only the tests whose name matches one of the positive patterns but\n"
+"      Run only the test whose name matches one of the positive patterns but\n"
 "      none of the negative patterns. '?' matches any single character; '*'\n"
 "      matches any substring; ':' separates two patterns.\n"
 "  @G--" GTEST_FLAG_PREFIX_ "also_run_disabled_tests@D\n"
-"      Run all disabled tests too.\n"
+"      Run all disabled test too.\n"
 "\n"
 "Test Execution:\n"
 "  @G--" GTEST_FLAG_PREFIX_ "repeat=@Y[COUNT]@D\n"
-"      Run the tests repeatedly; use a negative count to repeat forever.\n"
+"      Run the test repeatedly; use a negative count to repeat forever.\n"
 "  @G--" GTEST_FLAG_PREFIX_ "shuffle@D\n"
-"      Randomize tests' orders on every iteration.\n"
+"      Randomize test' orders on every iteration.\n"
 "  @G--" GTEST_FLAG_PREFIX_ "random_seed=@Y[NUMBER]@D\n"
 "      Random number seed to use for shuffling test orders (between 1 and\n"
 "      99999, or 0 to use a seed based on the current time).\n"
@@ -6363,7 +6363,7 @@ GTEST_PATH_SEP_ "@Y|@G:@YFILE_PATH]@D\n"
 "\n"
 "For more information, please read the " GTEST_NAME_ " documentation at\n"
 "@G" GTEST_PROJECT_URL_ "@D. If you find a bug in " GTEST_NAME_ "\n"
-"(not one in your own code or tests), please report it to\n"
+"(not one in your own code or test), please report it to\n"
 "@G<" GTEST_DEV_EMAIL_ ">@D.\n";
 
 // Parses the command line for Google Test flags, without initializing
@@ -6528,7 +6528,7 @@ void InitGoogleTest(int* argc, wchar_t** argv) {
 //
 // Author: wan@google.com (Zhanyong Wan), vladl@google.com (Vlad Losev)
 //
-// This file implements death tests.
+// This file implements death test.
 
 
 #if GTEST_HAS_DEATH_TEST
@@ -6562,9 +6562,9 @@ void InitGoogleTest(int* argc, wchar_t** argv) {
 
 
 // Indicates that this translation unit is part of Google Test's
-// implementation.  It must come before gtest-internal-inl.h is
+// implementation.  It must come before test-internal-inl.h is
 // included, or there will be a compiler error.  This trick is to
-// prevent a user from accidentally including gtest-internal-inl.h in
+// prevent a user from accidentally including test-internal-inl.h in
 // his code.
 #define GTEST_IMPLEMENTATION_ 1
 #undef GTEST_IMPLEMENTATION_
@@ -6588,7 +6588,7 @@ namespace testing {
     GTEST_DEFINE_bool_(
             death_test_use_fork,
             internal::BoolFromGTestEnv("death_test_use_fork", false),
-    "Instructs to use fork()/_exit() instead of clone() in death tests. "
+    "Instructs to use fork()/_exit() instead of clone() in death test. "
     "Ignored and always uses fork() on POSIX systems where clone() is not "
     "implemented. Useful when running under valgrind or similar tools if "
     "those do not support clone(). Valgrind 3.3.1 will just fail if "
@@ -6612,19 +6612,19 @@ namespace testing {
 
     namespace internal {
 
-// Valid only for fast death tests. Indicates the code is running in the
+// Valid only for fast death test. Indicates the code is running in the
 // child process of a fast style death test.
 static bool g_in_fast_death_test_child = false;
 
 // Returns a Boolean value indicating whether the caller is currently
 // executing in the context of the death test child process.  Tools such as
 // Valgrind heap checkers may need this to modify their behavior in death
-// tests.  IMPORTANT: This is an internal utility.  Using it may break the
-// implementation of death tests.  User code MUST NOT use it.
+// test.  IMPORTANT: This is an internal utility.  Using it may break the
+// implementation of death test.  User code MUST NOT use it.
 bool InDeathTestChild() {
 # if GTEST_OS_WINDOWS
 
-  // On Windows, death tests are thread-safe regardless of the value of the
+  // On Windows, death test are thread-safe regardless of the value of the
   // death_test_style flag.
   return !GTEST_FLAG(internal_run_death_test).empty();
 
@@ -6669,7 +6669,7 @@ bool KilledBySignal::operator()(int exit_status) const {
 
 namespace internal {
 
-// Utilities needed for death tests.
+// Utilities needed for death test.
 
 // Generates a textual description of a given exit code, in the format
 // specified by wait(2).
@@ -6710,7 +6710,7 @@ bool ExitedUnsuccessfully(int exit_status) {
 // caller not to pass a thread_count of 1.
 static std::string DeathTestThreadWarning(size_t thread_count) {
   Message msg;
-  msg << "Death tests use fork(), which is unsafe particularly"
+  msg << "Death test use fork(), which is unsafe particularly"
       << " in a threaded context. For this test, " << GTEST_NAME_ << " ";
   if (thread_count == 0)
     msg << "couldn't detect the number of threads.";
@@ -7071,8 +7071,8 @@ bool DeathTestImpl::Passed(bool status_ok) {
 }
 
 # if GTEST_OS_WINDOWS
-// WindowsDeathTest implements death tests on Windows. Due to the
-// specifics of starting new processes on Windows, death tests there are
+// WindowsDeathTest implements death test on Windows. Due to the
+// specifics of starting new processes on Windows, death test there are
 // always threadsafe, and Google Test considers the
 // --gtest_death_test_style=fast setting to be equivalent to
 // --gtest_death_test_style=threadsafe there.
@@ -7908,7 +7908,7 @@ const char kPathSeparatorString[] = "\\";
 const char kAlternatePathSeparatorString[] = "/";
 # if GTEST_OS_WINDOWS_MOBILE
 // Windows CE doesn't have a current directory. You should not use
-// the current directory in tests on Windows CE, but this at least
+// the current directory in test on Windows CE, but this at least
 // provides a reasonable fallback.
 const char kCurrentDirectoryString[] = "\\";
 // Windows CE doesn't define INVALID_FILE_ATTRIBUTES
@@ -8273,9 +8273,9 @@ const char kCurrentDirectoryString[] = ".\\";
 
 
 // Indicates that this translation unit is part of Google Test's
-// implementation.  It must come before gtest-internal-inl.h is
+// implementation.  It must come before test-internal-inl.h is
 // included, or there will be a compiler error.  This trick is to
-// prevent a user from accidentally including gtest-internal-inl.h in
+// prevent a user from accidentally including test-internal-inl.h in
 // his code.
 #define GTEST_IMPLEMENTATION_ 1
 #undef GTEST_IMPLEMENTATION_
@@ -8345,7 +8345,7 @@ size_t GetThreadCount() {
 
 #if GTEST_USES_POSIX_RE
 
-        // Implements RE.  Currently only needed for death tests.
+        // Implements RE.  Currently only needed for death test.
 
 RE::~RE() {
   if (is_valid_) {
@@ -9409,9 +9409,9 @@ namespace testing {
 
 
 // Indicates that this translation unit is part of Google Test's
-// implementation.  It must come before gtest-internal-inl.h is
+// implementation.  It must come before test-internal-inl.h is
 // included, or there will be a compiler error.  This trick is to
-// prevent a user from accidentally including gtest-internal-inl.h in
+// prevent a user from accidentally including test-internal-inl.h in
 // his code.
 #define GTEST_IMPLEMENTATION_ 1
 #undef GTEST_IMPLEMENTATION_
