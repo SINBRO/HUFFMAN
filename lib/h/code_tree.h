@@ -11,7 +11,7 @@
 #include <vector>
 
 struct code_tree {
-    typedef symbol (code_tree::*Decode) (uint64_t);
+    typedef symbol (code_tree::*Decode)(uint64_t);
 
     code_tree();
 
@@ -70,11 +70,11 @@ struct code_tree {
 private:
     int32_t convert_dfs(std::vector<std::pair<int32_t, int32_t>> &v, node const *x);
 
-    node *make_node(std::vector<std::pair<int32_t, int32_t>> const &init_data, uint64_t i);
+    node *make_node(std::vector<std::pair<int32_t, int32_t>> const &init_data, uint64_t i, size_t &recursion_deepness);
 
     void fill_codes(code codes[SYMBOL_CNT], node const *x, code c);
 
-    std::pair<symbol, uint8_t> * cheat_table = nullptr;
+    std::pair<symbol, uint8_t> *cheat_table = nullptr;
 
     node *head = nullptr;
 };

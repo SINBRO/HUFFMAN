@@ -29,11 +29,13 @@ struct file_writer {
 
     void print_n_bytes(uint8_t n, uint64_t val);
 
+    void flush();
+
 private:
     std::ofstream out;
     symbol buffer[BUFFER_SIZE];
-    uint64_t cur_symbol;
-    uint64_t cur_part;
+    uint64_t cur_symbol = 0;
+    uint64_t cur_part = 0;
     uint8_t cur_bits = 0;
 };
 

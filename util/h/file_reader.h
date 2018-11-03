@@ -13,6 +13,8 @@ struct file_reader {
 
     explicit file_reader(std::string const &file_name);
 
+    ~file_reader();
+
     void restart();
 
     void upload();
@@ -39,6 +41,7 @@ private:
     std::ifstream in;
     std::string file;
     symbol buffer[BUFFER_SIZE];
+    symbol res = 0;
     uint64_t cur_symbol = 0;
     uint64_t s_in_buff = 0;
     uint64_t cur_code_piece = 0;

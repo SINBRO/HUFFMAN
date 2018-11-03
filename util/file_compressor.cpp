@@ -17,25 +17,20 @@ void file_compressor::compress(std::string const &dst) {
     writer.print_n_bytes(8, symbols_in_file);
     writer.print_number(static_cast<int32_t>(converted_tree.size()));
 
-    //std::cerr << "c s: " << symbols_in_file << " tr_sz: " << converted_tree.size() << "\n";
-
-
     for (auto &i : converted_tree) {
         writer.print_number(i.first);
         writer.print_number(i.second);
     }                                       // TREE PRINTED
 
-    //std::pair<symbol const *, uint64_t> block;
-
-    for (uint64_t j = 0; j < symbols_in_file; ++j) {
-        //block = reader.get_block();
+    while (!reader.eof()) {
         writer.print_code_block(compressor.compress(reader.get_block()));
     }
+
+    writer.flush();
 }
 
 std::unique_ptr<uint64_t[]> file_compressor::count_symbols() {
     std::unique_ptr<uint64_t[]> res(new uint64_t[SYMBOL_CNT]);
-    //memset(res.get(), 0, SYMBOL_CNT * sizeof(uint64_t));
     for (uint64_t i = 0; i < SYMBOL_CNT; ++i) {
         res[i] = 0;
     }
@@ -49,10 +44,11 @@ std::unique_ptr<uint64_t[]> file_compressor::count_symbols() {
     return res;
 }
 
-void file_compressor::compress(std::string const &src, std::string const &dst) {
-    auto *compressor = new file_compressor(src);
-    compressor->compress(dst);
-    delete compressor;
+void compress(std::string const &src, std::string const &dst) {
+    {
+        file_compressor compressor(src);
+        compressor.compress(dst);
+    }
 }
 
 uint64_t file_compressor::file_bytes_cnt() {

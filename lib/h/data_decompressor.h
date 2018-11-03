@@ -14,7 +14,7 @@ struct data_decompressor {
 
     void set_tree(code_tree *another_tree);
 
-    symbol decode(uint64_t code_piece); // MUST MANAGE WITH %8 BITS
+    symbol decode(uint64_t code_piece);
 
     uint8_t code_pos();
 
