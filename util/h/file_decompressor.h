@@ -9,8 +9,6 @@
 #include "file_reader.h"
 #include "file_writer.h"
 
-void decompress(std::string const & src, std::string const &dst);
-
 struct file_decompressor {
 
     file_decompressor() = delete;
@@ -27,6 +25,8 @@ private:
     file_reader reader;
     file_writer writer;
 };
+
+void decompress(std::string const & src, std::string const &dst);
 
 
 #endif //HUFFMAN_FILE_DECOMPRESSOR_H

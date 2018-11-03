@@ -9,8 +9,6 @@
 #include "file_reader.h"
 #include "file_writer.h"
 
-void compress(std::string const & src, std::string const & dst);
-
 struct file_compressor {
     file_compressor() = delete;
 
@@ -27,6 +25,8 @@ private:
     file_writer writer;
     data_compressor compressor;
 };
+
+void compress(std::string const & src, std::string const & dst);
 
 
 

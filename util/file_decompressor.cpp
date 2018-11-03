@@ -38,7 +38,7 @@ file_decompressor::file_decompressor(std::string const &file_name) : reader(file
 void file_decompressor::decompress(std::string const &dst) {
     writer.set_file(dst);
     //while (!reader.eof() || reader.has_useful_bits()) {
-    //std::cout << "s out:" << symbols_in_file << '\n';
+    //std::cerr << "s out: " << symbols_in_file << '\n';
 
     for (uint64_t i = 0; i != symbols_in_file; ++i) {
         writer.print(decompressor.decode(reader.get_next_code_piece()));

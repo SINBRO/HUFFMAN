@@ -15,7 +15,7 @@ void file_compressor::compress(std::string const &dst) {
     auto converted_tree = compressor.tree.convert();
 
     writer.print_n_bytes(8, symbols_in_file);
-    //std::cout << "s in:" << symbols_in_file << '\n';
+    //std::cerr << "s  in: " << symbols_in_file << '\n';
     writer.print_number(static_cast<int32_t>(converted_tree.size()));
 
     //std::cerr << "c s: " << symbols_in_file << " tr_sz: " << converted_tree.size() << "\n";

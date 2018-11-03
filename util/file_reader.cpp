@@ -6,18 +6,21 @@
 #include "h/file_reader.h"
 
 file_reader::file_reader(std::string const &file_name) : in(file_name, std::ifstream::binary),
-                                                         file(file_name) {
+                                                         file(file_name), res(0), cur_symbol(0), s_in_buff(0),
+                                                         cur_code_piece(0), useful_bits(0) {
     if (in.fail()) {
         in.close();
         throw std::runtime_error("Unable to open file \"" + file_name + "\"");
     }
+    /*for (auto &i : buffer) {
+        i = 0;
+    }*/
     upload();
 }
 
 
-
 symbol file_reader::get_symbol() {
-    symbol res = buffer[cur_symbol++];
+    res = buffer[cur_symbol++];
     upload();
 
     /*if (cur_symbol >= s_in_buff) {
@@ -43,7 +46,7 @@ void file_reader::restart() {
     cur_symbol = s_in_buff = 0;
     if (in.fail()) {
         in.close();
-        throw std::runtime_error("Lost access to file \"" + file + "\"");
+        throw std::runtime_error("Lost access to file \"" + file + "\"\n");
     }
 }
 
@@ -60,9 +63,7 @@ void file_reader::upload() {
         if (s_in_buff == 0) {
             in.read(reinterpret_cast<char *>(buffer), BUFFER_SIZE * sizeof(symbol) / sizeof(char));
             s_in_buff = static_cast<uint64_t>(in.gcount()) * sizeof(char) / sizeof(symbol);
-
         }
-
         //std::cout << "up:" << s_in_buff << '\n';
     }
 }
@@ -88,7 +89,7 @@ uint64_t file_reader::get_n_bytes(uint8_t n) { // effective n <= 8
 
 uint64_t file_reader::get_n_bytes_r(uint8_t n) {
     uint64_t res = 0;
-    for (uint8_t i = 0; i != n*8; i+=8) {
+    for (uint8_t i = 0; i != n * 8; i += 8) {
         res |= static_cast<uint64_t>(get_symbol()) << (i);
     }
     return res;

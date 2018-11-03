@@ -17,28 +17,23 @@ bool compare_files(std::string const &file1, std::string const &file2) {
 
 void compr(std::string const &mode, std::string const &src, std::string const &dst) {
     if (mode == "-c") {
-//        file_compressor compressor(src);
-//        compressor.compress(dst);
+        file_compressor compressor(src);
+        compressor.compress(dst);
 
-        auto * compressor = new file_compressor(src);
-        compressor->compress(dst);
-        delete compressor;
     } else if (mode == "-d") {
-//        file_decompressor decompressor(src);
-//        decompressor.decompress(dst);
+        file_decompressor decompressor(src);
+        decompressor.decompress(dst);
 
-        auto * decompressor = new file_decompressor(src);
-        decompressor->decompress(dst);
-        delete decompressor;
     }
 }
 
 template<typename Byte_gen>
 void generate_file(std::string const &name, uint64_t size, Byte_gen byte_generator) {
-    file_writer writer(name);
+    auto * writer = new file_writer(name);
     for (uint64_t i = 0; i < size; ++i) {
-        writer.print(byte_generator(i));
+        writer->print(byte_generator(i));
     }
+    delete writer;
 }
 
 TEST(correctness, example) {
@@ -97,7 +92,7 @@ TEST(correctness, irregular_1_mb) {
     EXPECT_TRUE(compare_files("test.test", "decompressed"));
 }
 
-/*TEST(correctness, random_80_mb) {
+TEST(correctness, random_80_mb) {
     generate_file("test.test", 80 * (1 << 20), [](uint64_t) { return static_cast<symbol>(random()); });
     compr("-c", "test.test", "compressed");
     compr("-d", "compressed", "decompressed");
@@ -112,4 +107,14 @@ TEST(correctness, random_10_mb_or_less) {
         compr("-d", "compressed", "decompressed");
         EXPECT_TRUE(compare_files("test.test", "decompressed"));
     }
-}*/
+}
+
+TEST(correctness, random_many_small) {
+    for (int i = 0; i < 10; ++i) {
+        generate_file("test.test", static_cast<uint64_t>(random()) % (10 << 20),
+                      [](uint64_t) { return static_cast<symbol>(random()); });
+        compr("-c", "test.test", "compressed");
+        compr("-d", "compressed", "decompressed");
+        EXPECT_TRUE(compare_files("test.test", "decompressed"));
+    }
+}
