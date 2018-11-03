@@ -36,13 +36,13 @@ void generate_file(std::string const &name, uint64_t size, Byte_gen byte_generat
     delete writer;
 }
 
-TEST(correctness, example) {
+TEST(correctness, example) { // needs file "example" in ..release/test directory
     compr("-c", "example", "compressed");
     compr("-d", "compressed", "decompressed");
     EXPECT_TRUE(compare_files("example", "decompressed"));
 }
 
-TEST(correctness, img) {
+TEST(correctness, img) { // needs file "example.jpg" in ..release/test directory
     compr("-c", "example.jpg", "compressed");
     compr("-d", "compressed", "decompressed.jpg");
     EXPECT_TRUE(compare_files("example.jpg", "decompressed.jpg"));
@@ -110,11 +110,14 @@ TEST(correctness, random_10_mb_or_less) {
 }
 
 TEST(correctness, random_many_small) {
-    for (int i = 0; i < 10; ++i) {
-        generate_file("test.test", static_cast<uint64_t>(random()) % (10 << 20),
+    int passed = 0;
+    int tests = 10000;
+    for (int i = 0; i < tests; ++i) {
+        generate_file("test.test", static_cast<uint64_t>(random()) % (1 << 12),
                       [](uint64_t) { return static_cast<symbol>(random()); });
         compr("-c", "test.test", "compressed");
         compr("-d", "compressed", "decompressed");
-        EXPECT_TRUE(compare_files("test.test", "decompressed"));
+        passed += compare_files("test.test", "decompressed");
     }
+    EXPECT_EQ(passed, tests);
 }
