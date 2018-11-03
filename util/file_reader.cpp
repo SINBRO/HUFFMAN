@@ -2,6 +2,7 @@
 // Created by andrey on 11.10.18.
 //
 
+#include <iostream>
 #include "h/file_reader.h"
 
 file_reader::file_reader(std::string const &file_name) : in(file_name, std::ifstream::binary),
@@ -10,22 +11,29 @@ file_reader::file_reader(std::string const &file_name) : in(file_name, std::ifst
         in.close();
         throw std::runtime_error("Unable to open file \"" + file_name + "\"");
     }
+    upload();
 }
 
 
 
 symbol file_reader::get_symbol() {
-    if (cur_symbol >= s_in_buff) {
-        if (in.eof()) {
+    symbol res = buffer[cur_symbol++];
+    upload();
+
+    /*if (cur_symbol >= s_in_buff) {
+        *//*if (in.eof()) {
+            std::cout << "EOF\n";
             return 0;
-        }
+        }*//*
         in.read(reinterpret_cast<char *>(buffer), BUFFER_SIZE * sizeof(symbol) / sizeof(char));
         cur_symbol = 0;
         s_in_buff = static_cast<uint64_t>(in.gcount()) * sizeof(char) / sizeof(symbol);
+        std::cout << "r:" << s_in_buff << '\n';
 
         //cout << "<read new BUFFER " << (in.eof() ? "eof" : "!eof") << ' ' << s_in_buff << "> ";
-    }
-    return buffer[cur_symbol++];
+    }*/
+    //std::cout << buffer[cur_symbol];
+    return res;
 }
 
 void file_reader::restart() {
@@ -48,13 +56,21 @@ void file_reader::upload() {
         in.read(reinterpret_cast<char *>(buffer), BUFFER_SIZE * sizeof(symbol) / sizeof(char));
         cur_symbol = 0;
         s_in_buff = static_cast<uint64_t>(in.gcount()) * sizeof(char) / sizeof(symbol);
+
+        if (s_in_buff == 0) {
+            in.read(reinterpret_cast<char *>(buffer), BUFFER_SIZE * sizeof(symbol) / sizeof(char));
+            s_in_buff = static_cast<uint64_t>(in.gcount()) * sizeof(char) / sizeof(symbol);
+
+        }
+
+        //std::cout << "up:" << s_in_buff << '\n';
     }
 }
 
 std::pair<symbol const *, uint64_t> file_reader::get_block() {
     upload();
     auto res = std::pair<symbol const *, uint64_t>(buffer + cur_symbol, s_in_buff - cur_symbol);
-    //cout << "<got block of " << s_in_buff - cur_symbol << "> ";
+    //std::cout << "<got block of " << s_in_buff - cur_symbol << "> ";
     cur_symbol = s_in_buff;
 
     return res;
@@ -100,4 +116,8 @@ inline void file_reader::refill_useful_bits() {
 
 bool file_reader::has_useful_bits() const {
     return useful_bits > 0;
+}
+
+file_reader::~file_reader() {
+    in.close();
 }

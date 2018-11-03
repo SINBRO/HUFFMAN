@@ -9,6 +9,8 @@
 #include "file_reader.h"
 #include "file_writer.h"
 
+void compress(std::string const & src, std::string const & dst);
+
 struct file_compressor {
     file_compressor() = delete;
 
@@ -17,9 +19,6 @@ struct file_compressor {
     void compress(std::string const &dst);
 
     uint64_t file_bytes_cnt();
-
-    static void compress(std::string const & src, std::string const & dst);
-
 private:
     std::unique_ptr<uint64_t[]> count_symbols();
 

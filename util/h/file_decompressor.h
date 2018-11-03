@@ -9,7 +9,10 @@
 #include "file_reader.h"
 #include "file_writer.h"
 
+void decompress(std::string const & src, std::string const &dst);
+
 struct file_decompressor {
+
     file_decompressor() = delete;
 
     explicit file_decompressor(std::string const &file_name);
@@ -17,8 +20,6 @@ struct file_decompressor {
     void decompress(std::string const &dst);
 
     uint64_t file_bytes_cnt();
-
-    static void decompress(std::string const & src, std::string const &dst);
 
 private:
     uint64_t symbols_in_file = 0;

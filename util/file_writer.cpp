@@ -2,6 +2,7 @@
 // Created by andrey on 11.10.18.
 //
 
+#include <iostream>
 #include "h/file_writer.h"
 
 
@@ -56,6 +57,7 @@ file_writer::~file_writer() {
     }
     out.write(reinterpret_cast<const char *>(buffer), cur_symbol * sizeof(symbol) / sizeof(char));
     out.close();
+    //std::cerr << "writer closed\n";
 }
 
 /*void file_writer::print_number(int32_t x) {
@@ -77,4 +79,12 @@ void file_writer::print_n_bytes(uint8_t n, uint64_t val) {
         print(static_cast<symbol>(val));
         val >>= 8 * sizeof(symbol);
     }
+}
+
+void file_writer::flush() {
+    if (cur_bits != 0) {
+        print_n_bytes(8, cur_part); //static_cast<uint8_t>((cur_bits + 7) / 8)
+    }
+    out.write(reinterpret_cast<const char *>(buffer), cur_symbol * sizeof(symbol) / sizeof(char));
+    cur_symbol = 0;
 }

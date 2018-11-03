@@ -13,6 +13,8 @@ struct file_reader {
 
     explicit file_reader(std::string const &file_name);
 
+    ~file_reader();
+
     void restart();
 
     void upload();
