@@ -36,7 +36,7 @@ set(SOURCES
 
         gtest_main.cc
         gtest-all.cc
-        ../util/huffman_tests.cpp)
+        huffman_tests.cpp)
 
 add_executable(test ${HEADERS} ${SOURCES})
 

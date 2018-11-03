@@ -1,6 +1,6 @@
-#include "h/file_compressor.h"
-#include "h/file_decompressor.h"
-#include "../test/gtest.h"
+#include "../util/h/file_compressor.h"
+#include "../util/h/file_decompressor.h"
+#include "gtest.h"
 
 bool compare_files(std::string const &file1, std::string const &file2) {
     file_reader reader1(file1);
@@ -42,7 +42,7 @@ TEST(correctness, empty) {
     EXPECT_TRUE(compare_files("test.test", "decompressed"));
 }
 
-TEST(correctness, wrong_compressed_incorrect_tree) {
+TEST(correctness, wrong_compressed) {
     {
         file_writer writer("test.test");
         writer.print_n_bytes(8, 2 << 10);
