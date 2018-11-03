@@ -24,12 +24,24 @@ void generate_file(std::string const &name, uint64_t size, Byte_gen byte_generat
 }
 
 TEST(correctness, example) { // needs file "example" in ..release/test directory
+    try {
+        file_reader("example");
+    } catch (...) {
+        std::cerr << "\"example\" not found, so created like empty file\n";
+        generate_file("example", 0, [](uint64_t) { return 0; });
+    }
     compress("example", "compressed");
     decompress("compressed", "decompressed");
     EXPECT_TRUE(compare_files("example", "decompressed"));
 }
 
 TEST(correctness, img) { // needs file "example.jpg" in ..release/test directory
+    try {
+        file_reader("example.jpg");
+    } catch (...) {
+        std::cerr << "\"example.jpg\" not found, so created like empty file\n";
+        generate_file("example.jpg", 0, [](uint64_t) { return 0; });
+    }
     compress("example.jpg", "compressed");
     decompress("compressed", "decompressed.jpg");
     EXPECT_TRUE(compare_files("example.jpg", "decompressed.jpg"));
@@ -62,7 +74,7 @@ TEST(correctness, only_0) {
 }
 
 TEST(correctness, random_short) {
-    generate_file("test.test", (1 << 10) + 17, [](uint64_t x) { return static_cast<symbol>(random()); });
+    generate_file("test.test", (1 << 10) - 5, [](uint64_t x) { return static_cast<symbol>(random()); });
     compress("test.test", "compressed");
     decompress("compressed", "decompressed");
     EXPECT_TRUE(compare_files("test.test", "decompressed"));
