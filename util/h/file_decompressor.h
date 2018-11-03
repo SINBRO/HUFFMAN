@@ -26,7 +26,7 @@ private:
     file_writer writer;
 };
 
-void decompress(std::string const & src, std::string const &dst);
+void decompress(std::string const &src, std::string const &dst);
 
 
 #endif //HUFFMAN_FILE_DECOMPRESSOR_H

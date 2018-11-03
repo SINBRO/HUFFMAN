@@ -41,7 +41,12 @@ code_tree::code_tree(std::unique_ptr<uint64_t[]> &freq) {
 
 code_tree::code_tree(std::vector<std::pair<int32_t, int32_t>> const &init_data) {
     decode_num = &code_tree::decode_by_tree;
-    head = make_node(init_data, init_data.size() - 1);
+    size_t recursion = 0;
+    try {
+        head = make_node(init_data, init_data.size() - 1, recursion);
+    } catch (...) {
+        throw std::runtime_error("Compressed file is incorrect or damaged (unable to get correct code tree)");
+    }
 }
 
 symbol code_tree::decode_by_tree(uint64_t code_piece) {
@@ -54,13 +59,18 @@ symbol code_tree::decode_by_tree(uint64_t code_piece) {
 }
 
 code_tree::node *
-code_tree::make_node(std::vector<std::pair<int32_t, int32_t>> const &init_data, uint64_t i) { //!!! MB INFINITE RECURSION
+code_tree::make_node(std::vector<std::pair<int32_t, int32_t>> const &init_data,
+                     uint64_t i, size_t &recursion_deepness) {
     node *res, *ch1, *ch2;
+    recursion_deepness++;
+    if (recursion_deepness > 4 * SYMBOL_CNT) {
+        throw std::runtime_error("Compressed file is incorrect or damaged (unable to get correct code tree)");
+    }
     if (init_data[i].second == -1) {
         res = new node(static_cast<uint16_t>(init_data[i].first));
     } else {
-        ch1 = make_node(init_data, static_cast<uint64_t>(init_data[i].first));
-        ch2 = make_node(init_data, static_cast<uint64_t>(init_data[i].second));
+        ch1 = make_node(init_data, static_cast<uint64_t>(init_data[i].first), recursion_deepness);
+        ch2 = make_node(init_data, static_cast<uint64_t>(init_data[i].second), recursion_deepness);
         res = new node(ch2, ch1);
     }
     return res;

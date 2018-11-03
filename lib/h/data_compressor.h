@@ -10,8 +10,6 @@
 struct data_compressor {
     data_compressor() = delete;
 
-    //~data_compressor();
-
     explicit data_compressor(std::unique_ptr<uint64_t[]> freq); // SYMBOL_CNT elements
 
     std::vector<code> compress(std::pair<symbol const *, uint64_t> const &);

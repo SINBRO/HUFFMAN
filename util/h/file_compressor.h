@@ -17,6 +17,7 @@ struct file_compressor {
     void compress(std::string const &dst);
 
     uint64_t file_bytes_cnt();
+
 private:
     std::unique_ptr<uint64_t[]> count_symbols();
 
@@ -26,8 +27,7 @@ private:
     data_compressor compressor;
 };
 
-void compress(std::string const & src, std::string const & dst);
-
+void compress(std::string const &src, std::string const &dst);
 
 
 #endif //HUFFMAN_FILE_COMPRESSOR_H

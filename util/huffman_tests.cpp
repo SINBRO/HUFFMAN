@@ -29,7 +29,7 @@ void compr(std::string const &mode, std::string const &src, std::string const &d
 
 template<typename Byte_gen>
 void generate_file(std::string const &name, uint64_t size, Byte_gen byte_generator) {
-    auto * writer = new file_writer(name);
+    auto *writer = new file_writer(name);
     for (uint64_t i = 0; i < size; ++i) {
         writer->print(byte_generator(i));
     }
@@ -71,7 +71,7 @@ TEST(correctness, random_short) {
 }
 
 TEST(correctness, random_1_mb) {
-    generate_file("test.test", (1 << 20) , [](uint64_t x) { return static_cast<symbol>(random()); });
+    generate_file("test.test", (1 << 20), [](uint64_t x) { return static_cast<symbol>(random()); });
     compr("-c", "test.test", "compressed");
     compr("-d", "compressed", "decompressed");
     EXPECT_TRUE(compare_files("test.test", "decompressed"));

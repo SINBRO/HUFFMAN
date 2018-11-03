@@ -15,21 +15,14 @@ void file_compressor::compress(std::string const &dst) {
     auto converted_tree = compressor.tree.convert();
 
     writer.print_n_bytes(8, symbols_in_file);
-    //std::cerr << "s  in: " << symbols_in_file << '\n';
     writer.print_number(static_cast<int32_t>(converted_tree.size()));
-
-    //std::cerr << "c s: " << symbols_in_file << " tr_sz: " << converted_tree.size() << "\n";
-
 
     for (auto &i : converted_tree) {
         writer.print_number(i.first);
         writer.print_number(i.second);
     }                                       // TREE PRINTED
 
-    //std::pair<symbol const *, uint64_t> block;
-    //for (uint64_t j = 0; j < symbols_in_file; ++j) {
     while (!reader.eof()) {
-        //block = reader.get_block();
         writer.print_code_block(compressor.compress(reader.get_block()));
     }
 
@@ -38,7 +31,6 @@ void file_compressor::compress(std::string const &dst) {
 
 std::unique_ptr<uint64_t[]> file_compressor::count_symbols() {
     std::unique_ptr<uint64_t[]> res(new uint64_t[SYMBOL_CNT]);
-    //memset(res.get(), 0, SYMBOL_CNT * sizeof(uint64_t));
     for (uint64_t i = 0; i < SYMBOL_CNT; ++i) {
         res[i] = 0;
     }

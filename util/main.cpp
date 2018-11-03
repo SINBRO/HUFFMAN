@@ -15,7 +15,7 @@ int main(int argc, char *argv[]) {
     uint64_t file_size;
 
     if (mode == "-c") {
-        std::cerr << "Compressing \"" + src + "\" in \""+ dst + "\" ...\n";
+        std::cerr << "Compressing \"" + src + "\" in \"" + dst + "\" ...\n";
         start = clock();
         try {
             file_compressor compressor(src);
@@ -32,7 +32,7 @@ int main(int argc, char *argv[]) {
                   << double(file_size) / (1 << 20) / (double(finish - start) / CLOCKS_PER_SEC) << " mb/s)";
         return 0;
     } else if (mode == "-d") {
-        std::cerr << "Decompressing \"" + src + "\" in \""+ dst + "\" ...\n";
+        std::cerr << "Decompressing \"" + src + "\" in \"" + dst + "\" ...\n";
         start = clock();
         try {
             file_decompressor decompressor(src);
